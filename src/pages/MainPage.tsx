@@ -13,7 +13,7 @@ export default class MainPage extends Component<
   constructor(props: { children?: JSX.Element }) {
     super(props);
     this.state = {
-      searchVal: '',
+      searchVal: localStorage.getItem('valueKey') || '',
     };
   }
 
