@@ -1,5 +1,6 @@
 import { Component, FormEvent } from 'react';
 import './search.css';
+import ErrorBtn from '../error-boundary/ErrorBtn';
 
 interface SearchProps {
   children?: JSX.Element;
@@ -61,6 +62,7 @@ class Search extends Component<SearchProps, State> {
               Search
             </button>
           </form>
+          <ErrorBtn />
         </div>
       </>
     );
