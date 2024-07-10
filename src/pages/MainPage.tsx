@@ -1,32 +1,20 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Search from '../components/search/Search';
 import ListResult from '../components/list-result/ListResult';
 
-type State = {
-  searchVal: string;
+const MainPage = () => {
+  const [searchValue, setSearchValue] = useState(
+    localStorage.getItem('valueKey') || ''
+  );
+  const updateData = (value: string) => {
+    setSearchValue(value);
+  };
+  return (
+    <>
+      <Search updateData={updateData} />
+      <ListResult data={searchValue} />
+    </>
+  );
 };
 
-export default class MainPage extends Component<
-  { children?: JSX.Element },
-  State
-> {
-  constructor(props: { children?: JSX.Element }) {
-    super(props);
-    this.state = {
-      searchVal: localStorage.getItem('valueKey') || '',
-    };
-  }
-
-  updateData = (value: string) => {
-    this.setState({ searchVal: value });
-  };
-
-  render() {
-    return (
-      <>
-        <Search updateData={this.updateData} />
-        <ListResult data={this.state.searchVal} />
-      </>
-    );
-  }
-}
+export default MainPage;
