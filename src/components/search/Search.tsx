@@ -3,7 +3,6 @@ import './search.css';
 import ErrorBtn from '../error-boundary/ErrorBtn';
 
 const Search = (props: { updateData: (arg0: string) => void }) => {
-  // const [value, setValue] = useState('');
   const [inputVal, setInputValue] = useState(
     localStorage.getItem('valueKey') || ''
   );
@@ -22,7 +21,13 @@ const Search = (props: { updateData: (arg0: string) => void }) => {
 
   return (
     <>
-      <h2 className="header">Api: Star Wars (SWAPI)</h2>
+      <h2 className="header">
+        Api: DummyJSON (
+        <a target="blank" href="https://dummyjson.com/">
+          https://dummyjson.com/
+        </a>
+        )
+      </h2>
       <div className="search__container">
         <form onSubmit={onSubmit}>
           <label className="search__label">
