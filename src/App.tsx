@@ -1,12 +1,9 @@
+import { RouterProvider } from 'react-router-dom';
 import './App.css';
-import MainPage from './pages/MainPage';
+import router from './routes/MainRoute';
 
 const App = () => {
-  return (
-    <>
-      <MainPage />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
