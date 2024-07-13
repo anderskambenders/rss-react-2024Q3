@@ -1,72 +1,51 @@
-import { Component, FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import './search.css';
 import ErrorBtn from '../error-boundary/ErrorBtn';
 
-interface SearchProps {
-  children?: JSX.Element;
-  updateData?: (value: string) => void;
-}
-type State = {
-  value: string;
-};
+const Search = (props: { updateData: (arg0: string) => void }) => {
+  // const [value, setValue] = useState('');
+  const [inputVal, setInputValue] = useState(
+    localStorage.getItem('valueKey') || ''
+  );
 
-class Search extends Component<SearchProps, State> {
-  inputVal: string;
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      value: '',
-    };
-    this.inputVal = '';
-  }
-
-  onChange(event: { target: { value: string } }) {
-    this.setState({ value: event.target.value });
-    this.inputVal = event.target.value;
-  }
-
-  onSubmit = (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('valueKey', this.inputVal);
-    if (this.props.updateData) {
-      this.props.updateData(this.inputVal);
+    localStorage.setItem('valueKey', inputVal);
+    if (props.updateData) {
+      props.updateData(inputVal);
     }
   };
 
-  componentDidMount(): void {
-    if (localStorage.getItem('valueKey') !== null) {
-      this.setState({ value: localStorage.getItem('valueKey') as string });
-    }
-  }
+  const onChange = (event: { target: { value: string } }) => {
+    setInputValue(event.target.value);
+  };
 
-  render() {
-    return (
-      <>
-        <h2 className="header">Api: Star Wars (SWAPI)</h2>
-        <div className="search__container">
-          <form onSubmit={this.onSubmit.bind(this)}>
-            <label className="search__label">
-              Enter what you want to see:
-              <input
-                className="search__input"
-                name="key"
-                id="key"
-                type="text"
-                placeholder="enter search param"
-                autoComplete="on"
-                value={this.state.value}
-                onChange={this.onChange.bind(this)}
-              />
-            </label>
-            <button className="search__btn" type="submit">
-              Search
-            </button>
-          </form>
-          <ErrorBtn />
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <h2 className="header">Api: Star Wars (SWAPI)</h2>
+      <div className="search__container">
+        <form onSubmit={onSubmit}>
+          <label className="search__label">
+            Enter what you want to see:
+            <input
+              className="search__input"
+              name="key"
+              id="key"
+              type="text"
+              placeholder="enter search param"
+              autoComplete="on"
+              value={inputVal}
+              onChange={onChange}
+            />
+          </label>
+          <button className="search__btn" type="submit">
+            Search
+          </button>
+        </form>
+        <ErrorBtn />
+      </div>
+    </>
+  );
+};
 
 export default Search;
