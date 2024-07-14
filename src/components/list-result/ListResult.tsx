@@ -1,26 +1,44 @@
 import { useEffect, useState } from 'react';
-import { BASE_URL, SEARCH_URL, getData } from '../../utils/api';
+import { baseUrl, searchUrl } from '../../utils/api';
 import './list-result.css';
 import { Product } from './types';
+import Pagination from '../pagination/Pagination';
+import { useSearchParams } from 'react-router-dom';
+
+export const LIMIT = 10;
 
 const ListResult = (props: { data: string }) => {
+  const storageData = localStorage.getItem('valueKey');
+  const [search] = useSearchParams();
+  const page = Object.fromEntries(search).page || '1';
+  const skip = LIMIT * (+page - 1);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState<Array<Product>>([]);
+  const [itemsCount, setItemsCount] = useState(0);
+
+  const getData = async (url: string) => {
+    setIsLoaded(false);
+    setItems([]);
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      setItemsCount(result.total);
+      setIsLoaded(true);
+      setItems(result.products);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    const url =
-      localStorage.getItem('valueKey') !== null
-        ? `${SEARCH_URL}${localStorage.getItem('valueKey')}`
-        : BASE_URL;
-    const getDataList = async () => {
-      setIsLoaded(false);
-      setItems([]);
-      const items = await getData(url);
-      setItems(items);
-      setIsLoaded(true);
-    };
-    getDataList();
-  }, [props.data]);
+    let url;
+    if (props.data?.length === 0) {
+      url = baseUrl(LIMIT, skip);
+    } else {
+      url = storageData !== null ? searchUrl(storageData) : baseUrl;
+    }
+    getData(url as string);
+  }, [page, props.data]);
   return (
     <div className="list__container">
       {!isLoaded && <p>Loading...</p>}
@@ -38,6 +56,7 @@ const ListResult = (props: { data: string }) => {
           </div>
         ))}
       </ol>
+      {isLoaded && <Pagination itemsCount={itemsCount} />}
     </div>
   );
 };
