@@ -49,6 +49,7 @@ const ListResult = (props: { data: string }) => {
             {items.map((item, ind) => (
               <Link
                 className="link"
+                data-testid="card"
                 key={+page * 10 + ind}
                 to={`about/${item.id}?page=${page}`}
               >
