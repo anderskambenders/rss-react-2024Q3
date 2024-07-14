@@ -3,7 +3,7 @@ import { baseUrl, searchUrl } from '../../utils/api';
 import './list-result.css';
 import { Product } from './types';
 import Pagination from '../pagination/Pagination';
-import { useSearchParams } from 'react-router-dom';
+import { Link, Outlet, useSearchParams } from 'react-router-dom';
 
 export const LIMIT = 10;
 
@@ -40,23 +40,32 @@ const ListResult = (props: { data: string }) => {
     getData(url as string);
   }, [page, props.data]);
   return (
-    <div className="list__container">
-      {!isLoaded && <p>Loading...</p>}
-      <ol className="list">
-        {isLoaded && items.length === 0 && <p>Sorry, no items founded</p>}
-        {items.map((item, ind) => (
-          <div key={`$item-list${ind}`}>
-            <div className="list__item" key={item.id}>
-              <ul className="item__container">
-                <img className="item__img" src={item.images[0]} />
-                <li className="item">{`Name: ${item.title}`}</li>
-                <li className="item">{`Description: ${item.description} cm`}</li>
-              </ul>
-            </div>
+    <div className="result__container">
+      <div className="list__container">
+        <div>
+          {!isLoaded && <p>Loading...</p>}
+          <div className="list">
+            {isLoaded && items.length === 0 && <p>Sorry, no items founded</p>}
+            {items.map((item, ind) => (
+              <Link
+                className="link"
+                key={+page * 10 + ind}
+                to={`about/${item.id}?page=${page}`}
+              >
+                <div className="list__item" key={item.id}>
+                  <ul className="item__container">
+                    <img className="item__img" src={item.images[0]} />
+                    <li className="item">{`Name: ${item.title}`}</li>
+                    <li className="item">{`Description: ${item.description} cm`}</li>
+                  </ul>
+                </div>
+              </Link>
+            ))}
           </div>
-        ))}
-      </ol>
-      {isLoaded && <Pagination itemsCount={itemsCount} />}
+        </div>
+        {isLoaded && <Pagination itemsCount={itemsCount} />}
+      </div>
+      <Outlet />
     </div>
   );
 };
