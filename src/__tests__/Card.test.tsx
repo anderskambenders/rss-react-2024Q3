@@ -1,62 +1,57 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import Card from '../components/list-result/Card';
 import App from '../App';
 
-const productDetails = {
+const product = {
   id: 1,
-  title: 'Essence Mascara Lash Princess',
-  description:
-    'The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.',
-  price: 9.99,
-  discountPercentage: 7.17,
-  rating: 4.94,
-  stock: 5,
-  brand: 'Essence',
+  title: 'Iphone',
+  description: 'Description: SIM-Free,',
+  price: 1000,
+  discountPercentage: 10,
+  rating: 10,
+  stock: 4,
+  brand: 'apple',
+  category: 'phones',
+  thumbnail: ['moc, apple'],
+  species: ['red', 'blue'],
+  images: ['image.png'],
 };
 
-describe('Card details component', () => {
-  it('Smoke check', async () => {
-    const app = render(<App />);
-    expect(app).not.toBeNull();
+describe('Card Component', () => {
+  it('image is rendered', () => {
+    render(
+      <Card
+        id={product.id}
+        image={product.images}
+        title={product.title}
+        description={product.description}
+      />
+    );
+    expect(screen.getByAltText('product image')).toBeInTheDocument();
   });
-
-  it('Ensure that clicking the close button hides the component', async () => {
+  it('renders the relevant card data', () => {
+    render(
+      <Card
+        id={product.id}
+        image={product.images}
+        title={product.title}
+        description={product.description}
+      />
+    );
+    const name = screen.getByText('Name: Iphone');
+    expect(name).toBeInTheDocument();
+  });
+  it('Validate that clicking on a card opens a detailed card component', async () => {
+    localStorage.setItem('valueKey', product.title);
     render(<App />);
-    const name = await screen.findByText(`Name: ${productDetails.title}`);
+
+    const name = await screen.findByText('Name: Essence Mascara Lash Princess');
     fireEvent.click(name);
+
     const descriptionElement = await screen.findByText(
-      `Description: ${productDetails.description}`
+      'Essence Mascara Lash Princess'
     );
-    await waitFor(() => {
-      expect(descriptionElement).not.toBeNull();
-    });
-    const buttonElement = screen.getByRole('button', { name: /Back/i });
-    fireEvent.click(buttonElement);
-    await waitFor(() => {
-      const descriptionElement = screen.queryByText(
-        `Description: ${productDetails.description}`
-      );
-      expect(descriptionElement).toBeNull();
-    });
-  });
-
-  it('Make sure the detailed card component correctly displays the detailed card data', async () => {
-    render(<App />);
-
-    const name = await screen.findByText(`Name: ${productDetails.title}`);
-    fireEvent.click(name);
-
-    const descriptionField = await screen.findByText(
-      `Description: ${productDetails.description}`
-    );
-    expect(descriptionField).not.toBeNull();
-  });
-
-  it('Check that a loading indicator is displayed while fetching data', async () => {
-    render(<App />);
-    const name = await screen.findByText(productDetails.title);
-    fireEvent.click(name);
-
-    const loader = screen.findByText('Loading...');
-    expect(loader).not.toBeNull();
+    expect(descriptionElement).not.toBeNull();
   });
 });

@@ -4,6 +4,7 @@ import './list-result.css';
 import { Product } from './types';
 import Pagination from '../pagination/Pagination';
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
+import Card from './Card';
 
 export const LIMIT = 10;
 
@@ -53,13 +54,12 @@ const ListResult = (props: { data: string }) => {
                 key={+page * 10 + ind}
                 to={`about/${item.id}?page=${page}`}
               >
-                <div className="list__item" key={item.id}>
-                  <ul className="item__container">
-                    <img className="item__img" src={item.images[0]} />
-                    <li className="item">{`Name: ${item.title}`}</li>
-                    <li className="item">{`Description: ${item.description} cm`}</li>
-                  </ul>
-                </div>
+                <Card
+                  id={item.id}
+                  image={item.images}
+                  title={item.title}
+                  description={item.description}
+                />
               </Link>
             ))}
           </div>

@@ -1,5 +1,5 @@
-import './card.css';
-import { Product } from '.././list-result/types';
+import './card-detail.css';
+import { Product } from '../list-result/types';
 import { Link, useParams } from 'react-router-dom';
 import { getProduct } from '../../utils/api';
 import { useEffect, useState } from 'react';
