@@ -1,15 +1,15 @@
 import { FormEvent, useState } from 'react';
 import './search.css';
 import ErrorBtn from '../error-boundary/ErrorBtn';
+import useLocaleStorage from '../../hooks/useLocaleStorage';
 
 const Search = (props: { updateData: (arg0: string) => void }) => {
-  const [inputVal, setInputValue] = useState(
-    localStorage.getItem('valueKey') || ''
-  );
+  const [storageValue, setStorageValue] = useLocaleStorage('valueKey', '');
+  const [inputVal, setInputValue] = useState(storageValue);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('valueKey', inputVal);
+    setStorageValue(inputVal);
     if (props.updateData) {
       props.updateData(inputVal);
     }

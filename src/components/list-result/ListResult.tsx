@@ -5,11 +5,12 @@ import { Product } from './types';
 import Pagination from '../pagination/Pagination';
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
 import Card from './Card';
+import useLocaleStorage from '../../hooks/useLocaleStorage';
 
 export const LIMIT = 10;
 
 const ListResult = (props: { data: string }) => {
-  const storageData = localStorage.getItem('valueKey');
+  const [storageData] = useLocaleStorage('valueKey', '');
   const [search] = useSearchParams();
   const page = Object.fromEntries(search).page || '1';
   const skip = LIMIT * (+page - 1);
@@ -32,13 +33,15 @@ const ListResult = (props: { data: string }) => {
   };
 
   useEffect(() => {
-    let url;
-    if (props.data?.length === 0) {
-      url = baseUrl(LIMIT, skip);
-    } else {
-      url = storageData !== null ? searchUrl(storageData) : baseUrl;
-    }
+    const url =
+      storageData !== '' ? searchUrl(storageData) : baseUrl(LIMIT, skip);
     getData(url as string);
+  }, []);
+
+  useEffect(() => {
+    props.data.length !== 0
+      ? getData(searchUrl(props.data))
+      : getData(baseUrl(LIMIT, skip));
   }, [page, props.data]);
   return (
     <div className="result__container">
