@@ -1,22 +1,27 @@
 import './card.css';
 import { Product } from '.././list-result/types';
-import { useLoaderData, Link, LoaderFunction, defer } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getProduct } from '../../utils/api';
-
-interface ProductData {
-  product: Product;
-}
-
-export const loader: LoaderFunction = async ({ params }) => {
-  if (params && params.productId !== undefined) {
-    return defer({ product: await getProduct(+params.productId) });
-  }
-};
+import { useEffect, useState } from 'react';
 
 const CardDetail = () => {
-  const { product } = useLoaderData() as ProductData;
-  console.log('card');
-  const CardInfo = (
+  const { productId } = useParams();
+  const [product, setProduct] = useState<Product>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      if (productId) {
+        const prod = await getProduct(+productId);
+        setProduct(prod);
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [productId]);
+
+  const CardInfo = product && (
     <div className={'infoWrap'}>
       <img className="product__img" src={product.images[0]} alt="prod-img" />
       <h3 className={'title'}>{product.title}</h3>
@@ -35,7 +40,8 @@ const CardDetail = () => {
   );
   return (
     <div className={'characterInfo'}>
-      {product !== undefined ? CardInfo : <p>Loading...</p>}
+      {loading && <p>Loading...</p>}
+      {!loading && CardInfo}
     </div>
   );
 };
