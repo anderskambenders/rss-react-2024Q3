@@ -18,7 +18,7 @@ describe('CardContainer', () => {
     const content = await screen.findAllByTestId('card');
     expect(content.length).toBe(10);
   });
-  it('message is displayed if no cards are present', async () => {
+  it('It renders component', async () => {
     render(
       <MemoryRouter initialEntries={['/page/1/']}>
         <ListResult data={''} />
