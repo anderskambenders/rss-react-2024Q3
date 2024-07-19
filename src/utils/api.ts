@@ -1,7 +1,7 @@
-export const baseUrl = (limit: number, skip: number) =>
+export const BASE_URL = (limit: number, skip: number) =>
   `https://dummyjson.com/products?limit=${limit}&skip=${skip}`;
 
-export const searchUrl = (searchString: string) =>
+export const SEARCH_URL = (searchString: string) =>
   `https://dummyjson.com/products/search?q=${searchString}`;
 
 export async function getProduct(id: number) {

@@ -1,12 +1,12 @@
 import './card-detail.css';
-import { Product } from '../list-result/types';
+import { IProduct } from '../../types/types';
 import { Link, useParams } from 'react-router-dom';
 import { getProduct } from '../../utils/api';
 import { useEffect, useState } from 'react';
 
 const CardDetail = () => {
   const { productId } = useParams();
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<IProduct>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

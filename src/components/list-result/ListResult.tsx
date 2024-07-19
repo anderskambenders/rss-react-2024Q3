@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { baseUrl, searchUrl } from '../../utils/api';
+import { BASE_URL, SEARCH_URL } from '../../utils/api';
 import './list-result.css';
-import { Product } from './types';
+import { IProduct } from '../../types/types';
 import Pagination from '../pagination/Pagination';
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
 import Card from './Card';
@@ -15,7 +15,7 @@ const ListResult = () => {
   const page = search.get('page') || 1;
   const skip = LIMIT * (+page - 1);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState<Array<Product>>([]);
+  const [items, setItems] = useState<Array<IProduct>>([]);
   const [itemsCount, setItemsCount] = useState(0);
 
   console.log(searchValue);
@@ -36,7 +36,7 @@ const ListResult = () => {
 
   useEffect(() => {
     const url =
-      searchValue !== '' ? searchUrl(searchValue) : baseUrl(LIMIT, skip);
+      searchValue !== '' ? SEARCH_URL(searchValue) : BASE_URL(LIMIT, skip);
     getData(url as string);
   }, [searchValue]);
 
