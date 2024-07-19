@@ -5,18 +5,20 @@ import { Product } from './types';
 import Pagination from '../pagination/Pagination';
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
 import Card from './Card';
-import useLocaleStorage from '../../hooks/useLocaleStorage';
+import { useAppSelector } from '../../store/hooks';
 
 export const LIMIT = 10;
 
-const ListResult = (props: { data: string }) => {
-  const [storageData] = useLocaleStorage('valueKey', '');
+const ListResult = () => {
+  const searchValue = useAppSelector((state) => state.searchTerm.searchTerm);
   const [search] = useSearchParams();
-  const page = Object.fromEntries(search).page || '1';
+  const page = search.get('page') || 1;
   const skip = LIMIT * (+page - 1);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState<Array<Product>>([]);
   const [itemsCount, setItemsCount] = useState(0);
+
+  console.log(searchValue);
 
   const getData = async (url: string) => {
     setIsLoaded(false);
@@ -34,15 +36,10 @@ const ListResult = (props: { data: string }) => {
 
   useEffect(() => {
     const url =
-      storageData !== '' ? searchUrl(storageData) : baseUrl(LIMIT, skip);
+      searchValue !== '' ? searchUrl(searchValue) : baseUrl(LIMIT, skip);
     getData(url as string);
-  }, []);
+  }, [searchValue]);
 
-  useEffect(() => {
-    props.data.length !== 0
-      ? getData(searchUrl(props.data))
-      : getData(baseUrl(LIMIT, skip));
-  }, [page, props.data]);
   return (
     <div className="result__container">
       <div className="list__container">

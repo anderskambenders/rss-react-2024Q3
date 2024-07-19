@@ -8,7 +8,7 @@ describe('CardContainer', () => {
   it('It renders component', async () => {
     render(
       <MemoryRouter initialEntries={['/page/1/']}>
-        <ListResult data={''} />
+        <ListResult />
       </MemoryRouter>
     );
     expect(ListResult).toBeTruthy();
@@ -21,7 +21,7 @@ describe('CardContainer', () => {
   it('It renders component', async () => {
     render(
       <MemoryRouter initialEntries={['/page/1/']}>
-        <ListResult data={''} />
+        <ListResult />
       </MemoryRouter>
     );
     const notFoundText = screen.findByText('Sorry, no items founded');

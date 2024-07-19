@@ -1,18 +1,20 @@
 import { FormEvent, useState } from 'react';
 import './search.css';
 import ErrorBtn from '../error-boundary/ErrorBtn';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { searchTermSlice } from '../../store/reducers/searchTerm.slice';
 import useLocaleStorage from '../../hooks/useLocaleStorage';
 
-const Search = (props: { updateData: (arg0: string) => void }) => {
-  const [storageValue, setStorageValue] = useLocaleStorage('valueKey', '');
-  const [inputVal, setInputValue] = useState(storageValue);
+const Search = () => {
+  const [, setLSTerm] = useLocaleStorage('valueKey', '');
+  const dispatch = useAppDispatch();
+  const searchTerm = useAppSelector((state) => state.searchTerm.searchTerm);
+  const [inputVal, setInputValue] = useState(searchTerm);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setStorageValue(inputVal);
-    if (props.updateData) {
-      props.updateData(inputVal);
-    }
+    dispatch(searchTermSlice.actions.set(inputVal));
+    setLSTerm(inputVal);
   };
 
   const onChange = (event: { target: { value: string } }) => {
