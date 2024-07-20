@@ -1,47 +1,34 @@
+import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { productsApi } from '../../service/ProductsService';
 import './card-detail.css';
-import { IProduct } from '../../types/types';
-import { Link, useParams } from 'react-router-dom';
-import { getProduct } from '../../utils/api';
-import { useEffect, useState } from 'react';
 
 const CardDetail = () => {
   const { productId } = useParams();
-  const [product, setProduct] = useState<IProduct>();
-  const [loading, setLoading] = useState(true);
+  const { data, isFetching } = productsApi.useGetProductQuery(productId);
+  const [search] = useSearchParams();
+  const currentPage = search.get('page');
+  const url = `/?page=${currentPage}`;
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      if (productId) {
-        const prod = await getProduct(+productId);
-        setProduct(prod);
-        setLoading(false);
-      }
-    };
-    fetchProduct();
-  }, [productId]);
-
-  const CardInfo = product && (
-    <div className={'infoWrap'}>
-      <img className="product__img" src={product.images[0]} alt="prod-img" />
-      <h3 className={'title'}>{product.title}</h3>
-      <div className={'blockInfo'}>
-        <div>Brand: {product.brand}</div>
-        <div>Description: {product.description}</div>
-        <div>Price: {product.price}$</div>
-        <div className={'listWrap'}></div>
-      </div>
-      <div>
-        <Link to={'/'}>
-          <button className={'backButton'}>Back</button>
-        </Link>
-      </div>
-    </div>
-  );
   return (
     <div className={'characterInfo'}>
-      {loading && <p>Loading...</p>}
-      {!loading && CardInfo}
+      {data && (
+        <div className={'infoWrap'}>
+          <img className="product__img" src={data.images[0]} alt="prod-img" />
+          <h3 className={'title'}>{data.title}</h3>
+          <div className={'blockInfo'}>
+            <div>Brand: {data.brand}</div>
+            <div>Description: {data.description}</div>
+            <div>Price: {data.price}$</div>
+            <div className={'listWrap'}></div>
+          </div>
+          <div>
+            <Link to={url}>
+              <button className={'backButton'}>Back</button>
+            </Link>
+          </div>
+        </div>
+      )}
+      {isFetching && <p>Loading...</p>}
     </div>
   );
 };
