@@ -1,52 +1,46 @@
 import { useEffect, useState } from 'react';
-import { BASE_URL, SEARCH_URL } from '../../utils/api';
 import './list-result.css';
 import { IProduct } from '../../types/types';
 import Pagination from '../pagination/Pagination';
 import { Link, Outlet, useSearchParams } from 'react-router-dom';
 import Card from './Card';
+import { productsApi } from '../../service/ProductsService';
 import { useAppSelector } from '../../store/hooks';
 
 export const LIMIT = 10;
 
 const ListResult = () => {
   const searchValue = useAppSelector((state) => state.searchTerm.searchTerm);
-  const [search] = useSearchParams();
-  const page = search.get('page') || 1;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page') || 1;
   const skip = LIMIT * (+page - 1);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState<Array<IProduct>>([]);
   const [itemsCount, setItemsCount] = useState(0);
-
-  console.log(searchValue);
-
-  const getData = async (url: string) => {
-    setIsLoaded(false);
-    setItems([]);
-    try {
-      const response = await fetch(url);
-      const result = await response.json();
-      setItemsCount(result.total);
-      setIsLoaded(true);
-      setItems(result.products);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { data, isFetching } = productsApi.useGetProductsQuery({
+    searchValue,
+    limit: LIMIT,
+    skip,
+  });
 
   useEffect(() => {
-    const url =
-      searchValue !== '' ? SEARCH_URL(searchValue) : BASE_URL(LIMIT, skip);
-    getData(url as string);
+    setSearchParams({ ...searchParams, page: '1' });
   }, [searchValue]);
+
+  useEffect(() => {
+    isFetching
+      ? setItems([])
+      : (setItems(data?.products), setItemsCount(data?.total));
+  }, [searchValue, data, isFetching]);
 
   return (
     <div className="result__container">
       <div className="list__container">
         <div>
-          {!isLoaded && <p>Loading...</p>}
+          {isFetching && <p>Loading...</p>}
           <div className="list">
-            {isLoaded && items.length === 0 && <p>Sorry, no items founded</p>}
+            {!isFetching && items.length === 0 && (
+              <p>Sorry, no items founded</p>
+            )}
             {items.map((item, ind) => (
               <Link
                 className="link"
@@ -64,7 +58,7 @@ const ListResult = () => {
             ))}
           </div>
         </div>
-        {isLoaded && <Pagination itemsCount={itemsCount} />}
+        {!isFetching && <Pagination itemsCount={itemsCount} />}
       </div>
       <Outlet />
     </div>

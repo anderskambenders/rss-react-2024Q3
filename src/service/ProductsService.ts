@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../utils/api';
-import { IProduct } from '../types/types';
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',
@@ -8,10 +7,7 @@ export const productsApi = createApi({
     baseUrl: `${BASE_URL}`,
   }),
   endpoints: (build) => ({
-    getProducts: build.query<
-      IProduct[],
-      { searchValue: string; limit: number; skip: number }
-    >({
+    getProducts: build.query({
       query: (args) => {
         const { searchValue, limit, skip } = args;
         return {
@@ -20,7 +16,7 @@ export const productsApi = createApi({
       },
     }),
 
-    getProduct: build.query<IProduct, { id: number }>({
+    getProduct: build.query({
       query: (id) => `/${id}`,
     }),
   }),

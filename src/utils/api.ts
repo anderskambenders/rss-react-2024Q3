@@ -1,8 +1,4 @@
-export const BASE_URL = (limit: number, skip: number) =>
-  `https://dummyjson.com/products?limit=${limit}&skip=${skip}`;
-
-export const SEARCH_URL = (searchString: string) =>
-  `https://dummyjson.com/products/search?q=${searchString}`;
+export const BASE_URL = `https://dummyjson.com/products`;
 
 export async function getProduct(id: number) {
   if (!id || typeof id !== 'number') {
