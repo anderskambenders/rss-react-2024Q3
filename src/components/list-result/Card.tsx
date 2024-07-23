@@ -1,41 +1,53 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
+import { IProduct } from '../../types/types';
 
 type CardProps = {
-  id: number;
-  image: string[];
-  title: string;
-  description: string;
+  product: IProduct;
   page: string | number;
 };
 
-const Card = (props: CardProps) => {
+const Card = ({ product, page }: CardProps) => {
+  const dispatch = useAppDispatch();
+  const selectedItems = useAppSelector(
+    (state) => state.selectedItems.selectedItems
+  );
+  const isSelected = selectedItems.some((item) => item.id === product.id);
+  const onChange = () => {
+    if (isSelected) {
+      dispatch(selectedItemsSlice.actions.unselectItem(product));
+    } else {
+      dispatch(selectedItemsSlice.actions.selectItem(product));
+    }
+  };
+  console.log(selectedItems);
+
   return (
     <div className="card">
       <input
         type="checkbox"
-        onChange={() => {
-          console.log('checked');
-        }}
+        checked={isSelected}
+        onChange={onChange}
         className="card-checkbox"
-        // disabled={isFetching} // Disable checkbox if details are being fetched
       />
-      <NavLink
+      <Link
         className="link"
         data-testid="card"
-        to={`about/${props.id}?page=${props.page}`}
+        to={`about/${product.id}?page=${page}`}
       >
-        <div className="list__item" key={props.id}>
+        <div className="list__item" key={product.id}>
           <ul className="item__container">
             <img
               className="item__img"
-              src={props.image[0]}
+              src={product.images[0]}
               alt="product image"
             />
-            <li className="item">{`Name: ${props.title}`}</li>
-            <li className="item">{`Description: ${props.description} cm`}</li>
+            <li className="item">{`Name: ${product.title}`}</li>
+            <li className="item">{`Description: ${product.description} cm`}</li>
           </ul>
         </div>
-      </NavLink>
+      </Link>
     </div>
   );
 };

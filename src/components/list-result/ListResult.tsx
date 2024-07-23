@@ -41,16 +41,10 @@ const ListResult = () => {
             {!isFetching && items.length === 0 && (
               <p>Sorry, no items founded</p>
             )}
-            {items.map((item, ind) => (
-              <Card
-                id={item.id}
-                image={item.images}
-                title={item.title}
-                description={item.description}
-                key={`card${ind}`}
-                page={page}
-              />
-            ))}
+            {items &&
+              items.map((item, ind) => (
+                <Card product={item} key={`card${ind}`} page={page} />
+              ))}
           </div>
         </div>
         {!isFetching && <Pagination itemsCount={itemsCount} />}
