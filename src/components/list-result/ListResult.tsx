@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './list-result.css';
 import { IProduct } from '../../types/types';
 import Pagination from '../pagination/Pagination';
-import { Link, Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import Card from './Card';
 import { productsApi } from '../../service/ProductsService';
 import { useAppSelector } from '../../store/hooks';
@@ -42,19 +42,14 @@ const ListResult = () => {
               <p>Sorry, no items founded</p>
             )}
             {items.map((item, ind) => (
-              <Link
-                className="link"
-                data-testid="card"
-                key={+page * 10 + ind}
-                to={`about/${item.id}?page=${page}`}
-              >
-                <Card
-                  id={item.id}
-                  image={item.images}
-                  title={item.title}
-                  description={item.description}
-                />
-              </Link>
+              <Card
+                id={item.id}
+                image={item.images}
+                title={item.title}
+                description={item.description}
+                key={`card${ind}`}
+                page={page}
+              />
             ))}
           </div>
         </div>

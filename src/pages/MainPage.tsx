@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Search from '../components/search/Search';
 import ListResult from '../components/list-result/ListResult';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,15 +13,12 @@ const MainPage = () => {
       navigate(`/?page=${page}`);
     }
   };
-  const [searchValue, setSearchValue] = useState('');
-
-  const updateData = (value: string) => setSearchValue(value);
 
   return (
     <>
-      <Search updateData={updateData} />
+      <Search />
       <div onClick={handleBack}>
-        <ListResult data={searchValue} />
+        <ListResult />
       </div>
     </>
   );
