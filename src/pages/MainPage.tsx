@@ -2,6 +2,7 @@ import Search from '../components/search/Search';
 import ListResult from '../components/list-result/ListResult';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Flyout from '../components/flyout/Flyout';
+import ThemeToggleButton from '../components/theme-toggler/ThemeToggler';
 
 const MainPage = () => {
   const { pathname } = useLocation();
@@ -18,6 +19,7 @@ const MainPage = () => {
   return (
     <>
       <Search />
+      <ThemeToggleButton />
       <Flyout />
       <div onClick={handleBack}>
         <ListResult />
