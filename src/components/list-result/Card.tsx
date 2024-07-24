@@ -21,7 +21,6 @@ const Card = ({ product, page }: CardProps) => {
       dispatch(selectedItemsSlice.actions.selectItem(product));
     }
   };
-  console.log(selectedItems);
 
   return (
     <div className="card">
