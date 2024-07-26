@@ -1,8 +1,10 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { productsApi } from '../../service/ProductsService';
 import './card-detail.css';
+import { useTheme } from '../../context/ThemeContext';
 
 const CardDetail = () => {
+  const { theme } = useTheme();
   const { productId } = useParams();
   const { data, isFetching } = productsApi.useGetProductQuery(productId);
   const [search] = useSearchParams();
@@ -12,7 +14,7 @@ const CardDetail = () => {
   return (
     <div className={'characterInfo'}>
       {data && (
-        <div className={'infoWrap'}>
+        <div className={`infoWrap infoWrap-${theme}`}>
           <img className="product__img" src={data.images[0]} alt="prod-img" />
           <h3 className={'title'}>{data.title}</h3>
           <div className={'blockInfo'}>

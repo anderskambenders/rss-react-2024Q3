@@ -6,10 +6,12 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import Card from './Card';
 import { productsApi } from '../../service/ProductsService';
 import { useAppSelector } from '../../store/hooks';
+import { useTheme } from '../../context/ThemeContext';
 
 export const LIMIT = 10;
 
 const ListResult = () => {
+  const { theme } = useTheme();
   const searchValue = useAppSelector((state) => state.searchTerm.searchTerm);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') || 1;
@@ -37,7 +39,7 @@ const ListResult = () => {
       <div className="list__container">
         <div>
           {isFetching && <p>Loading...</p>}
-          <div className="list">
+          <div className={`list list-${theme}`}>
             {!isFetching && items.length === 0 && (
               <p>Sorry, no items founded</p>
             )}

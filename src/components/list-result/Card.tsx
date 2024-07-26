@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
 import { IProduct } from '../../types/types';
+import { useTheme } from '../../context/ThemeContext';
 
 type CardProps = {
   product: IProduct;
@@ -9,6 +10,7 @@ type CardProps = {
 };
 
 const Card = ({ product, page }: CardProps) => {
+  const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const selectedItems = useAppSelector(
     (state) => state.selectedItems.selectedItems
@@ -35,7 +37,7 @@ const Card = ({ product, page }: CardProps) => {
         data-testid="card"
         to={`about/${product.id}?page=${page}`}
       >
-        <div className="list__item" key={product.id}>
+        <div className={`list__item list__item-${theme}`} key={product.id}>
           <ul className="item__container">
             <img
               className="item__img"

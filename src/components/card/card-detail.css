@@ -8,11 +8,18 @@
 .infoWrap {
   position: sticky;
   top: 20px;
-  background: #ebdddd;
   text-align: center;
   font-size: 18px;
   border: 1px solid rgb(101, 67, 173);
   border-radius: 15px;
+}
+
+.infoWrap-light {
+  background: #ebdddd;
+}
+
+.infoWrap-dark {
+  background: #474343;
 }
 
 .title {

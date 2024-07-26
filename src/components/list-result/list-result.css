@@ -19,16 +19,35 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
+
+}
+
+.list-light {
   background-color: #fffff1;
 }
+
+.list-dark {
+  background-color: #323232;
+}
+
 
 .list__item {
   display: flex;
   flex-direction: column;
-  background-color: #fff1f2;
+
   width: 400px;
   padding-bottom: 10px;
 }
+
+.list__item-light {
+  background-color: #fff1f2;
+}
+
+.list__item-dark {
+  background-color: #474242;
+}
+
+
 
 .link {
     cursor: pointer;
