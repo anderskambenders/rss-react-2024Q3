@@ -3,12 +3,19 @@ import { describe, expect, it } from 'vitest';
 import ListResult from '../components/list-result/ListResult';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
+import { ThemeProvider } from '../context/ThemeContext';
+import { Provider } from 'react-redux';
+import { mockStore } from './mock/mockStore';
 
 describe('CardContainer', () => {
   it('It renders component', async () => {
     render(
       <MemoryRouter initialEntries={['/page/1/']}>
-        <ListResult />
+        <Provider store={mockStore}>
+          <ThemeProvider>
+            <ListResult />
+          </ThemeProvider>
+        </Provider>
       </MemoryRouter>
     );
     expect(ListResult).toBeTruthy();
@@ -21,7 +28,11 @@ describe('CardContainer', () => {
   it('It renders component', async () => {
     render(
       <MemoryRouter initialEntries={['/page/1/']}>
-        <ListResult />
+        <Provider store={mockStore}>
+          <ThemeProvider>
+            <ListResult />
+          </ThemeProvider>
+        </Provider>
       </MemoryRouter>
     );
     const notFoundText = screen.findByText('Sorry, no items founded');

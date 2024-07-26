@@ -2,6 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import MainPage from '../pages/MainPage';
 import NotFound from '../pages/NotFoundPage';
+import { ThemeProvider } from '../context/ThemeContext';
+import { Provider } from 'react-redux';
+import { mockStore } from './mock/mockStore';
 
 const wrongPath = '/kavabanga';
 
@@ -9,7 +12,9 @@ describe('Not Found', () => {
   it('It renders component', () => {
     render(
       <MemoryRouter>
-        <NotFound />
+        <ThemeProvider>
+          <NotFound />
+        </ThemeProvider>
       </MemoryRouter>
     );
     const notFoundText = screen.findByText(
@@ -21,7 +26,11 @@ describe('Not Found', () => {
   it('Redirects to NotFound for invalid path', () => {
     render(
       <MemoryRouter initialEntries={[wrongPath]}>
-        <MainPage />
+        <Provider store={mockStore}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
       </MemoryRouter>
     );
     const notFoundText = screen.findByText(

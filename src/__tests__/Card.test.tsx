@@ -2,6 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import Card from '../components/list-result/Card';
 import App from '../App';
+import { ThemeProvider } from '../context/ThemeContext';
+import { Provider } from 'react-redux';
+import { mockStore } from './mock/mockStore';
+import { MemoryRouter } from 'react-router-dom';
 
 const product = {
   id: 1,
@@ -21,23 +25,25 @@ const product = {
 describe('Card Component', () => {
   it('image is rendered', () => {
     render(
-      <Card
-        id={product.id}
-        image={product.images}
-        title={product.title}
-        description={product.description}
-      />
+      <MemoryRouter>
+        <ThemeProvider>
+          <Provider store={mockStore}>
+            <Card product={product} page={1} />
+          </Provider>
+        </ThemeProvider>
+      </MemoryRouter>
     );
     expect(screen.getByAltText('product image')).toBeInTheDocument();
   });
   it('renders the relevant card data', () => {
     render(
-      <Card
-        id={product.id}
-        image={product.images}
-        title={product.title}
-        description={product.description}
-      />
+      <MemoryRouter>
+        <ThemeProvider>
+          <Provider store={mockStore}>
+            <Card product={product} page={1} />
+          </Provider>
+        </ThemeProvider>
+      </MemoryRouter>
     );
     const name = screen.getByText('Name: Iphone');
     expect(name).toBeInTheDocument();

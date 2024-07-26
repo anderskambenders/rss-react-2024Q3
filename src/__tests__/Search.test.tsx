@@ -1,28 +1,27 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import Search from '../components/search/Search';
-import { BrowserRouter } from 'react-router-dom';
-import { vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { mockStore } from './mock/mockStore';
+import { Provider } from 'react-redux';
 
 const TEST_STRING = 'Cawabanga';
 const SEARCH_DEFAULT: string = 'valueKey';
 const SEARCH_PLACEHOLDER_TEXT = 'enter search param';
 
-const updateData = vi.fn();
-
 const MockSearchComponent = () => {
   return (
-    <BrowserRouter>
-      <Search updateData={updateData} />
-    </BrowserRouter>
+    <Provider store={mockStore}>
+      <MemoryRouter>
+        <Search />
+      </MemoryRouter>
+    </Provider>
   );
 };
 
 describe('Search component', () => {
   it('Verify that clicking the Search button saves the entered value to the local storage', async () => {
     render(<MockSearchComponent />);
-
     localStorage.setItem(SEARCH_DEFAULT, '');
-
     const inputElement = await screen.findByPlaceholderText(
       SEARCH_PLACEHOLDER_TEXT
     );
@@ -43,6 +42,7 @@ describe('Search component', () => {
     const inputElement = (await screen.findByPlaceholderText(
       SEARCH_PLACEHOLDER_TEXT
     )) as HTMLInputElement;
+    console.log(localStorage.getItem(SEARCH_DEFAULT));
 
     expect(inputElement.value).toEqual(TEST_STRING);
   });
