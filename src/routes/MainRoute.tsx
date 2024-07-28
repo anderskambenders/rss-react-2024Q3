@@ -9,8 +9,11 @@ import CardDetail from '../components/card/CardDetail';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path={'/'} errorElement={<NotFoundPage />} element={<MainPage />}>
-      <Route path={`about/:productId`} element={<CardDetail />}></Route>
+    <Route>
+      <Route path="*" element={<NotFoundPage />} />
+      <Route path={'/'} element={<MainPage />}>
+        <Route path={`about/:productId`} element={<CardDetail />}></Route>
+      </Route>
     </Route>
   )
 );

@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Flyout from '../components/flyout/Flyout';
 import ThemeToggleButton from '../components/theme-toggler/ThemeToggler';
 import { useTheme } from '../context/ThemeContext';
+import ErrorBoundary from '../components/error-boundary/ErrorBoundary';
 
 const MainPage = () => {
   const { pathname } = useLocation();
@@ -19,16 +20,18 @@ const MainPage = () => {
   };
 
   return (
-    <div className={`app app-${theme}`}>
-      <div style={{ colorScheme: `${theme}`, position: 'relative' }}>
-        <ThemeToggleButton />
-        <Search />
-        <Flyout />
-        <div onClick={handleBack}>
-          <ListResult />
+    <ErrorBoundary>
+      <div className={`app app-${theme}`}>
+        <div style={{ colorScheme: `${theme}`, position: 'relative' }}>
+          <ThemeToggleButton />
+          <Search />
+          <Flyout />
+          <div onClick={handleBack}>
+            <ListResult />
+          </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 
