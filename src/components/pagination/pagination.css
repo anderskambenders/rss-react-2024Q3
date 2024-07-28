@@ -27,7 +27,7 @@ padding-top:10px;
 
 .round-effect:hover{
   text-decoration: none;
-  background:#67e6de;
+  background:#39827d;
   color:#FFF;
 }
 .round-effect:hover a {
@@ -36,10 +36,10 @@ padding-top:10px;
 }
 
 .active{
-  background:#67e6de;
+  background:#39827d;
   color:#FFF;
 }
 a:link {
   text-decoration: none;
-  color:#67e6de;
+  color:#39827d;
 }

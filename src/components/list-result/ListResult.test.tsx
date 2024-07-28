@@ -7,17 +7,19 @@ import { ThemeProvider } from '../../context/ThemeContext';
 import { Provider } from 'react-redux';
 import { mockStore } from '../../__tests__/mock/mockStore';
 
+const testComponent = (
+  <MemoryRouter initialEntries={['/page/1/']}>
+    <Provider store={mockStore}>
+      <ThemeProvider>
+        <ListResult />
+      </ThemeProvider>
+    </Provider>
+  </MemoryRouter>
+);
+
 describe('CardContainer', () => {
   it('It renders component', async () => {
-    render(
-      <MemoryRouter initialEntries={['/page/1/']}>
-        <Provider store={mockStore}>
-          <ThemeProvider>
-            <ListResult />
-          </ThemeProvider>
-        </Provider>
-      </MemoryRouter>
-    );
+    render(testComponent);
     expect(ListResult).toBeTruthy();
   });
   it('renders the specified number of cards', async () => {
@@ -26,16 +28,9 @@ describe('CardContainer', () => {
     expect(content.length).toBe(10);
   });
   it('It renders component', async () => {
-    render(
-      <MemoryRouter initialEntries={['/page/1/']}>
-        <Provider store={mockStore}>
-          <ThemeProvider>
-            <ListResult />
-          </ThemeProvider>
-        </Provider>
-      </MemoryRouter>
-    );
-    const notFoundText = screen.findByText('Sorry, no items founded');
+    const noItemsString = 'Sorry, no items founded';
+    render(testComponent);
+    const notFoundText = screen.findByText(noItemsString);
     expect(notFoundText).toBeTruthy();
   });
 });

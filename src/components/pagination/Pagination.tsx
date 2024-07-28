@@ -11,7 +11,7 @@ const Pagination = (props: PaginationProps) => {
   const params = useParams();
   const [search, setSearch] = useSearchParams();
   const { pathname } = useLocation();
-  const page = Object.fromEntries(search).page || '1';
+  const page = search.get('page') || '1';
   const [currentPage, setCurrentPage] = useState(+page);
   const maxPages = Math.ceil(props.itemsCount / LIMIT);
   const items = [];
