@@ -21,13 +21,6 @@ const Search = () => {
   };
   return (
     <>
-      <h2 className="header">
-        Api: DummyJSON (
-        <a target="blank" href="https://dummyjson.com/">
-          https://dummyjson.com/
-        </a>
-        )
-      </h2>
       <div className="search__container">
         <form onSubmit={onSubmit}>
           <label className="search__label">

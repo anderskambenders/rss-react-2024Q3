@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
 import { IProduct } from '../../types/types';
 import { useTheme } from '../../context/ThemeContext';
+import './card.css';
 
 type CardProps = {
   product: IProduct;
@@ -44,8 +45,8 @@ const Card = ({ product, page }: CardProps) => {
               src={product.images[0]}
               alt="product image"
             />
-            <li className="item">{`Name: ${product.title}`}</li>
-            <li className="item">{`Description: ${product.description} cm`}</li>
+            <li className="item card__header">{`${product.title}`}</li>
+            <li className="item card__text">{`${product.description} cm`}</li>
           </ul>
         </div>
       </Link>

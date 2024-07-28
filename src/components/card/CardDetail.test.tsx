@@ -21,7 +21,7 @@ describe('Card details component', () => {
 
   it('Ensure that clicking the close button hides the component', async () => {
     render(<App />);
-    const name = await screen.findByText(`Name: ${productDetails.title}`);
+    const name = await screen.findByText(`${productDetails.title}`);
     fireEvent.click(name);
     const descriptionElement = await screen.findByText(
       `Description: ${productDetails.description}`
@@ -42,7 +42,7 @@ describe('Card details component', () => {
   it('Make sure the detailed card component correctly displays the detailed card data', async () => {
     render(<App />);
 
-    const name = await screen.findByText(`Name: ${productDetails.title}`);
+    const name = await screen.findByText(`${productDetails.title}`);
     fireEvent.click(name);
 
     const descriptionField = await screen.findByText(
@@ -53,10 +53,9 @@ describe('Card details component', () => {
 
   it('Check that a loading indicator is displayed while fetching data', async () => {
     render(<App />);
-    const name = await screen.findByText(productDetails.title);
-    fireEvent.click(name);
-
-    const loader = screen.findByText('Loading...');
+    const name = await screen.findAllByText(productDetails.title);
+    fireEvent.click(name[0]);
+    const loader = screen.findByTestId('loading');
     expect(loader).not.toBeNull();
   });
 });

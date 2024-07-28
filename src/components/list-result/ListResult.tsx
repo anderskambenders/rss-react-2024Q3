@@ -7,6 +7,7 @@ import Card from './Card';
 import { productsApi } from '../../service/ProductsService';
 import { useAppSelector } from '../../store/hooks';
 import { useTheme } from '../../context/ThemeContext';
+import Loader from '../loader/Loader';
 
 export const LIMIT = 10;
 
@@ -38,7 +39,7 @@ const ListResult = () => {
     <div className="result__container">
       <div className="list__container">
         <div>
-          {isFetching && <p>Loading...</p>}
+          {isFetching && <Loader />}
           <div className={`list list-${theme}`}>
             {!isFetching && items.length === 0 && (
               <p>Sorry, no items founded</p>

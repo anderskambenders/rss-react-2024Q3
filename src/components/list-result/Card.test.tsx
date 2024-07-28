@@ -31,14 +31,14 @@ describe('Card Component', () => {
         </ThemeProvider>
       </MemoryRouter>
     );
-    const name = screen.getByText('Name: Iphone');
+    const name = screen.getByText('Iphone');
     expect(name).toBeInTheDocument();
   });
   it('Validate that clicking on a card opens a detailed card component', async () => {
     localStorage.setItem('valueKey', productMock.title);
     render(<App />);
 
-    const name = await screen.findByText('Name: Essence Mascara Lash Princess');
+    const name = await screen.findByText('Essence Mascara Lash Princess');
     fireEvent.click(name);
 
     const descriptionElement = await screen.findByText(

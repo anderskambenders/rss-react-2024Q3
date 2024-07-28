@@ -20,9 +20,9 @@ const MainPage = () => {
 
   return (
     <div className={`app app-${theme}`}>
-      <div style={{ colorScheme: `${theme}` }}>
-        <Search />
+      <div style={{ colorScheme: `${theme}`, position: 'relative' }}>
         <ThemeToggleButton />
+        <Search />
         <Flyout />
         <div onClick={handleBack}>
           <ListResult />

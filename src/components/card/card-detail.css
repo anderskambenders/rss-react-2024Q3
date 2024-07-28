@@ -1,11 +1,14 @@
 
-.characterInfo {
+.product__info {
   position: relative;
   width: 30%;
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
 }
 
-.infoWrap {
+.info__wrap {
   position: sticky;
   top: 20px;
   text-align: center;
@@ -14,11 +17,11 @@
   border-radius: 15px;
 }
 
-.infoWrap-light {
+.info__wrap-light {
   background: #ebdddd;
 }
 
-.infoWrap-dark {
+.info__wrap-dark {
   background: #474343;
 }
 
@@ -28,15 +31,15 @@
   color: rgb(78, 17, 138);
 }
 
-.blockInfo {
+.block__info {
   padding: 10px 0;
 }
 
-.blockInfo div {
+.block__info div {
   padding: 2px 0;
 }
 
-.listWrap {
+.list__wrap {
   display: flex;
   justify-content: center;
 }
