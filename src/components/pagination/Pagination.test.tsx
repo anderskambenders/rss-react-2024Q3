@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import Pagination from '../components/pagination/Pagination';
+import Pagination from './Pagination';
 
 const setSearch = vi.fn();
 const searchParams = new Map([['page', '1']]);

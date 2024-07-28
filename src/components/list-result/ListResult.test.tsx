@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import ListResult from '../components/list-result/ListResult';
+import ListResult from './ListResult';
 import { MemoryRouter } from 'react-router-dom';
-import App from '../App';
-import { ThemeProvider } from '../context/ThemeContext';
+import App from '../../App';
+import { ThemeProvider } from '../../context/ThemeContext';
 import { Provider } from 'react-redux';
-import { mockStore } from './mock/mockStore';
+import { mockStore } from '../../__tests__/mock/mockStore';
 
 describe('CardContainer', () => {
   it('It renders component', async () => {

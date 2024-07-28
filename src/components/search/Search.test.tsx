@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import Search from '../components/search/Search';
+import Search from './Search';
 import { MemoryRouter } from 'react-router-dom';
-import { mockStore } from './mock/mockStore';
+import { mockStore } from '../../__tests__/mock/mockStore';
 import { Provider } from 'react-redux';
 
 const TEST_STRING = 'Cawabanga';
@@ -42,8 +42,6 @@ describe('Search component', () => {
     const inputElement = (await screen.findByPlaceholderText(
       SEARCH_PLACEHOLDER_TEXT
     )) as HTMLInputElement;
-    console.log(localStorage.getItem(SEARCH_DEFAULT));
-
     expect(inputElement.value).toEqual(TEST_STRING);
   });
 });

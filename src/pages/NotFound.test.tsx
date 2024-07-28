@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import MainPage from '../pages/MainPage';
-import NotFound from '../pages/NotFoundPage';
+import MainPage from './MainPage';
+import NotFound from './NotFoundPage';
 import { ThemeProvider } from '../context/ThemeContext';
 import { Provider } from 'react-redux';
-import { mockStore } from './mock/mockStore';
+import { mockStore } from '../__tests__/mock/mockStore';
 
 const wrongPath = '/kavabanga';
 

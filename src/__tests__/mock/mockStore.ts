@@ -7,6 +7,21 @@ interface SearchTermState {
   searchTerm: string;
 }
 
+export const productMock = {
+  id: 1,
+  title: 'Iphone',
+  description: 'Description: SIM-Free,',
+  price: 1000,
+  discountPercentage: 10,
+  rating: 10,
+  stock: 4,
+  brand: 'apple',
+  category: 'phones',
+  thumbnail: ['moc, apple'],
+  species: ['red', 'blue'],
+  images: ['image.png'],
+};
+
 export const searchTermSlice = createSlice({
   name: 'searchTerm',
   initialState: {
