@@ -19,9 +19,9 @@ const CardDetail = () => {
           <img className="product__img" src={data.images[0]} alt="prod-img" />
           <h3 className={'title'}>{data.title}</h3>
           <div className={'block__info'}>
-            <div>Brand: {data.brand}</div>
-            <div>Description: {data.description}</div>
-            <div>Price: {data.price}$</div>
+            <div className="info__brand">Brand: {data.brand}</div>
+            <div className="info__desc">Description: {data.description}</div>
+            <div className="info__price">Price: {data.price}$</div>
             <div className={'list__wrap'}></div>
           </div>
           <div>

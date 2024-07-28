@@ -16,11 +16,8 @@
   color: #dae2e3;
 }
 
-
-
 .link {
     cursor: pointer;
-    /* color: black; */
     text-decoration: none;
 }
 
@@ -31,6 +28,7 @@
 .card__header {
   font-size: 1.5rem;
   font-weight: 500;
+  margin-bottom: 7px;
 }
 
 .item__img {
