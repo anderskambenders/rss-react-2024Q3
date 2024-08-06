@@ -1,20 +1,25 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { reducer as searchTermReducer } from './reducers/searchTerm.slice';
 import { reducer as selectedItemsReducer } from './reducers/selectedItems.slice';
+import { reducer as productsReducer } from './reducers/products.slice';
 
 import { productsApi } from '../service/ProductsService';
+import { createWrapper } from 'next-redux-wrapper';
 
 const reducers = combineReducers({
   searchTerm: searchTermReducer,
   selectedItems: selectedItemsReducer,
+  products: productsReducer,
   [productsApi.reducerPath]: productsApi.reducer,
 });
 
-export const store = configureStore({
-  reducer: reducers,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productsApi.middleware),
-});
+export const store = () =>
+  configureStore({
+    reducer: reducers,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(productsApi.middleware),
+  });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+type StoreType = ReturnType<typeof store>;
+export type RootState = ReturnType<StoreType['getState']>;
+export const wrapper = createWrapper(store, { debug: true });
