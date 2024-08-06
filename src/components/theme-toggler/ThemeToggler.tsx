@@ -1,5 +1,4 @@
 import { useTheme } from '../../context/ThemeContext';
-import './theme-toggler.css';
 
 const ThemeToggleButton: React.FC = () => {
   const { theme, setTheme } = useTheme();

@@ -1,5 +1,3 @@
-import './not-found.css';
-
 const NotFoundPage = () => {
   return (
     <div className="section">
@@ -7,9 +5,6 @@ const NotFoundPage = () => {
       <div className="page">
         Ooops!!! The page you are looking for is not found
       </div>
-      {/* <NavLink to={'/'} className="back-home">
-        Back to home
-      </NavLink> */}
     </div>
   );
 };

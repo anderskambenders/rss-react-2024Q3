@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
-import './flyout.css';
 import { useRef } from 'react';
 
 const Flyout = () => {

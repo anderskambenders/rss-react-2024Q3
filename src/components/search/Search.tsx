@@ -1,19 +1,15 @@
 import { FormEvent, useState } from 'react';
-import './search.css';
 import ErrorBtn from '../error-boundary/ErrorBtn';
 import { useAppDispatch } from '../../store/hooks';
 import { searchTermSlice } from '../../store/reducers/searchTerm.slice';
-import useLocaleStorage from '../../hooks/useLocaleStorage';
 
 const Search = () => {
-  const [LSTerm, setLSTerm] = useLocaleStorage('valueKey', '');
   const dispatch = useAppDispatch();
-  const [inputVal, setInputValue] = useState(LSTerm);
+  const [inputVal, setInputValue] = useState(dispatch);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(searchTermSlice.actions.set(inputVal));
-    setLSTerm(inputVal);
   };
 
   const onChange = (event: { target: { value: string } }) => {
