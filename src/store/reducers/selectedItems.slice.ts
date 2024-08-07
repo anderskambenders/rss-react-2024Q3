@@ -27,4 +27,5 @@ export const selectedItemsSlice = createSlice({
   },
 });
 
+export const { selectItem, unselectItem } = selectedItemsSlice.actions;
 export const { actions, reducer } = selectedItemsSlice;

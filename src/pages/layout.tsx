@@ -5,7 +5,8 @@ import ThemeToggleButton from '../components/theme-toggler/ThemeToggler';
 import { useTheme } from '../context/ThemeContext';
 
 const Layout = ({ data }: { data: IData }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
+  console.log(theme);
   return (
     <div className={`app app-${theme}`}>
       <div style={{ colorScheme: `${theme}`, position: 'relative' }}>

@@ -39,46 +39,29 @@
 // export default CardDetail;
 import { useRouter } from 'next/router';
 import { IProduct } from '../../types/types';
-import Image from 'next/image';
-import { blurDataURL } from '../list-result/Card';
+import { useTheme } from '../../context/ThemeContext';
 
 const CardDetail = ({ data }: { data: IProduct }) => {
   const router = useRouter();
   const { query, pathname } = router;
   const { ...queryWithoutDetails } = query;
-  const myLoader = () => {
-    return data.images[0];
-  };
+  const { theme } = useTheme();
 
   return (
-    <div className={'characterInfo'}>
+    <div className={'product__info'}>
       {data && (
-        <div className={'infoWrap'}>
-          <Image
-            className="product__img"
-            loader={myLoader}
-            src={data.images[0]}
-            alt={'product-img'}
-            width={200}
-            height={180}
-            unoptimized={true}
-            style={{
-              width: 'auto',
-              height: 'auto',
-            }}
-            placeholder="blur"
-            blurDataURL={blurDataURL}
-          />
+        <div className={`info__wrap info__wrap-${theme}`}>
+          <img className="product__img" src={data.images[0]} alt="prod-img" />
           <h3 className={'title'}>{data.title}</h3>
-          <div className={'blockInfo'}>
-            <div>Brand: {data.brand}</div>
-            <div>Description: {data.description}</div>
-            <div>Price: {data.price}$</div>
-            <div className={'listWrap'}></div>
+          <div className={'block__info'}>
+            <div className="info__brand">Brand: {data.brand}</div>
+            <div className="info__desc">Description: {data.description}</div>
+            <div className="info__price">Price: {data.price}$</div>
+            <div className={'list__wrap'}></div>
           </div>
           <div>
             <button
-              className={'backButton'}
+              className={'back__button'}
               onClick={() => {
                 router.push({
                   pathname,

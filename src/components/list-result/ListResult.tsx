@@ -61,6 +61,7 @@ import Pagination from '../pagination/Pagination';
 import { IProduct } from '../../types/types';
 import CardDetail from '../card/CardDetail';
 import { useRouter } from 'next/router';
+import { useTheme } from '../../context/ThemeContext';
 
 export interface IData {
   cardsData: IProduct[];
@@ -72,10 +73,12 @@ const ListResult = ({ data }: { data: IData }) => {
   const router = useRouter();
   const { pathname, query } = router;
   const { details, ...queryWithoutDetails } = query;
+  const theme = useTheme();
 
   return (
     <div
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         if (details) {
           router.push({
             pathname,
@@ -87,24 +90,11 @@ const ListResult = ({ data }: { data: IData }) => {
     >
       <div className="list__container">
         <div>
-          <div className="list">
+          <div className={`list list-${theme}`}>
             {data.cardsData.length === 0 && <p>Sorry, no items founded</p>}
             {data.cardsData?.map((item: IProduct, ind: number) => (
-              <div
-                key={ind}
-                onClick={() => {
-                  router.push({
-                    pathname,
-                    query: { ...query, details: `${item.id}` },
-                  });
-                }}
-              >
-                <Card
-                  id={item.id}
-                  image={item.images}
-                  title={item.title}
-                  description={item.description}
-                />
+              <div key={ind}>
+                <Card product={item} />
               </div>
             ))}
           </div>

@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { reducer as searchTermReducer } from './reducers/searchTerm.slice';
 import { reducer as selectedItemsReducer } from './reducers/selectedItems.slice';
 import { reducer as productsReducer } from './reducers/products.slice';
 
@@ -7,7 +6,6 @@ import { productsApi } from '../service/ProductsService';
 import { createWrapper } from 'next-redux-wrapper';
 
 const reducers = combineReducers({
-  searchTerm: searchTermReducer,
   selectedItems: selectedItemsReducer,
   products: productsReducer,
   [productsApi.reducerPath]: productsApi.reducer,

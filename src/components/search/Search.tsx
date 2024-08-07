@@ -1,20 +1,28 @@
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import ErrorBtn from '../error-boundary/ErrorBtn';
-import { useAppDispatch } from '../../store/hooks';
-import { searchTermSlice } from '../../store/reducers/searchTerm.slice';
+import { useRouter } from 'next/router';
 
 const Search = () => {
-  const dispatch = useAppDispatch();
-  const [inputVal, setInputValue] = useState(dispatch);
+  const [searchValue, setSearchValue] = useState('');
+  const router = useRouter();
+  useEffect(() => {
+    setSearchValue((router.query.searchValue || '').toString());
+    const pageParam = router.query?.page;
+    if (!pageParam) {
+      router.push({ query: { ...router.query, page: 1 } });
+    }
+  }, []);
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
+  };
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(searchTermSlice.actions.set(inputVal));
+    localStorage.setItem('valueKey', searchValue);
+    router.push({ query: { page: 1, searchValue } });
   };
 
-  const onChange = (event: { target: { value: string } }) => {
-    setInputValue(event.target.value);
-  };
   return (
     <>
       <div className="search__container">
@@ -28,7 +36,7 @@ const Search = () => {
               type="text"
               placeholder="enter search param"
               autoComplete="on"
-              value={inputVal}
+              value={searchValue}
               onChange={onChange}
             />
           </label>

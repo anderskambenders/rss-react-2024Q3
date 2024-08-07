@@ -23,7 +23,6 @@ const Pagination = (props: PaginationProps) => {
   const page = +(query?.page || 1);
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(page);
-  const [limit, setLimit] = useState(10);
   const maxPages = Math.ceil(props.itemsCount / itemsPerPage);
   const pageNumbers = getPaginationNumbers(currentPage, maxPages);
 
@@ -49,22 +48,9 @@ const Pagination = (props: PaginationProps) => {
     }
   };
 
-  const onChange = (e: { target: { value: string | number } }) => {
-    setLimit(+e.target.value);
-    delete query.details;
-    router.push({
-      query: { ...query, limit: +e.target.value, page: 1 },
-    });
-  };
-
   return (
     <>
       <div className="pagination-container">
-        <select onChange={onChange} value={limit}>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-        </select>
         <div className="paginate-ctn">
           <div className="round-effect" onClick={prevPage}>
             {' '}

@@ -54,37 +54,60 @@
 // };
 // export default Card;
 
-import Image from 'next/image';
-type CardProps = {
-  id: number;
-  image: string[];
-  title: string;
-  description: string;
-};
-export const blurDataURL = `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAiACYDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAAIBAwQFBv/EABsQAQEBAQEAAwAAAAAAAAAAAAABAhEDEyEx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APUek+mD2xeuprPYzenn0GDzzytfn+I+PlPmcA8CYAaqr1D2qtUFeoiQ3eiQBAkAv0o2ABYaAAkAA//Z`;
+import { useTheme } from '../../context/ThemeContext';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { IProduct } from '../../types/types';
+import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
+import { useRouter } from 'next/router';
 
-const Card = (props: CardProps) => {
-  const myLoader = () => {
-    return props.image[0];
+const Card = ({ product }: { product: IProduct }) => {
+  const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { pathname, query } = router;
+  const selectedItems = useAppSelector(
+    (state) => state.selectedItems.selectedItems
+  );
+  const isSelected = selectedItems.some((item) => item.id === product.id);
+  const onChange = () => {
+    if (isSelected) {
+      dispatch(selectedItemsSlice.actions.unselectItem(product));
+    } else {
+      dispatch(selectedItemsSlice.actions.selectItem(product));
+    }
   };
 
   return (
-    <div data-testid="card" className="list__item" key={props.id}>
-      <ul className="item__container">
-        <Image
-          className="item__img"
-          loader={myLoader}
-          src={props.image[0]}
-          alt={'product-image'}
-          width={200}
-          height={180}
-          unoptimized={true}
-          placeholder="blur"
-          blurDataURL={blurDataURL}
+    <div
+      onClick={() => {
+        router.push({
+          pathname,
+          query: { ...query, details: `${product.id}` },
+        });
+      }}
+      data-testid="card"
+      className="card"
+      key={product.id}
+    >
+      <div onClick={(e) => e.stopPropagation()}>
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={onChange}
+          className="card-checkbox"
         />
-        <li className="item">{`Name: ${props.title}`}</li>
-        <li className="item">{`Description: ${props.description} cm`}</li>
-      </ul>
+      </div>
+      <div className={`list__item list__item-${theme}`}>
+        <ul className="item__container">
+          <img
+            className="item__img"
+            src={product.images[0]}
+            alt="product image"
+          />
+          <li className="item">{`Name: ${product.title}`}</li>
+          <li className="item">{`Description: ${product.description} cm`}</li>
+        </ul>
+      </div>
     </div>
   );
 };
