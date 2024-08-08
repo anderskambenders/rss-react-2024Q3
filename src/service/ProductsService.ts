@@ -24,11 +24,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../utils/api';
 import { productsSlice } from '../store/reducers/products.slice';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export const productsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
   tagTypes: [],
   endpoints: (build) => ({
     getProducts: build.query({
@@ -56,9 +62,9 @@ export const productsApi = createApi({
   }),
 });
 
-// export const {
-//   useGetProductsQuery,
-//   useGetProductQuery,
-//   util: { getRunningQueriesThunk },
-// } = productsApi;
-// export const { getProducts, getProduct } = productsApi.endpoints;
+export const {
+  useGetProductsQuery,
+  useGetProductQuery,
+  util: { getRunningQueriesThunk },
+} = productsApi;
+export const { getProducts, getProduct } = productsApi.endpoints;

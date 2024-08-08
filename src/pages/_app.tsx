@@ -10,7 +10,14 @@ import '../components/loader/loader.css';
 import '../components/pagination/pagination.css';
 import '../components/search/search.css';
 import '../components/theme-toggler/theme-toggler.css';
+import { Provider } from 'react-redux';
+import { wrapper } from '../store/store';
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  const { store } = wrapper.useWrappedStore(pageProps);
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+  );
 }

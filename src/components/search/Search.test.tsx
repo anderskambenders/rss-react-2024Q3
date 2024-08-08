@@ -1,27 +1,34 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import Search from './Search';
-import { MemoryRouter } from 'react-router-dom';
-import { mockStore } from '../../__tests__/mock/mockStore';
-import { Provider } from 'react-redux';
+import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
+import userEvent from '@testing-library/user-event';
+import { createMockRouter } from '../../__tests__/mock/mockRouter';
 
 const TEST_STRING = 'Cawabanga';
 const SEARCH_DEFAULT: string = 'valueKey';
 const SEARCH_PLACEHOLDER_TEXT = 'enter search param';
 
 const MockSearchComponent = () => {
+  const mockRouter = createMockRouter({});
   return (
-    <Provider store={mockStore}>
-      <MemoryRouter>
-        <Search />
-      </MemoryRouter>
-    </Provider>
+    <RouterContext.Provider value={mockRouter}>
+      <Search />
+    </RouterContext.Provider>
   );
 };
 
 describe('Search component', () => {
   it('Verify that clicking the Search button saves the entered value to the local storage', async () => {
     render(<MockSearchComponent />);
+
     localStorage.setItem(SEARCH_DEFAULT, '');
+
     const inputElement = await screen.findByPlaceholderText(
       SEARCH_PLACEHOLDER_TEXT
     );
@@ -34,14 +41,27 @@ describe('Search component', () => {
 
     expect(localStorage.getItem(SEARCH_DEFAULT)).toEqual(TEST_STRING);
   });
-
-  it('Check that the component retrieves the value from the local storage upon mounting', async () => {
-    localStorage.setItem(SEARCH_DEFAULT, TEST_STRING);
-    render(<MockSearchComponent />);
-
-    const inputElement = (await screen.findByPlaceholderText(
+  it('clicking the Search button should set search parameters', async () => {
+    const mockRouter = createMockRouter({});
+    act(() => {
+      render(
+        <RouterContext.Provider value={mockRouter}>
+          <Search />
+        </RouterContext.Provider>
+      );
+    });
+    const inputElement = await screen.findByPlaceholderText(
       SEARCH_PLACEHOLDER_TEXT
-    )) as HTMLInputElement;
-    expect(inputElement.value).toEqual(TEST_STRING);
+    );
+
+    await act(async () => {
+      await userEvent.type(inputElement, 'test query string');
+      await userEvent.click(screen.getByText('Search'));
+    });
+    await waitFor(() => {
+      expect(mockRouter.push).toBeCalledWith({
+        query: { searchValue: 'test query string', page: 1 },
+      });
+    });
   });
 });

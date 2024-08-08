@@ -1,8 +1,10 @@
 import ErrorBoundary from '../components/error-boundary/ErrorBoundary';
-import { Provider } from 'react-redux';
-import { store } from '../store/store';
 import { wrapper } from '../store/store';
-import { productsApi } from '../service/ProductsService';
+import {
+  getProduct,
+  getProducts,
+  getRunningQueriesThunk,
+} from '../service/ProductsService';
 import { InferGetServerSidePropsType } from 'next';
 import Layout from './layout';
 import { ThemeProvider } from '../context/ThemeContext';
@@ -11,21 +13,17 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const { searchValue, limit, page, details } = context.query;
     store.dispatch(
-      productsApi.endpoints.getProducts.initiate({
+      getProducts.initiate({
         searchValue: searchValue?.toString() || '',
         limit: limit?.toString() || '10',
         skip: (+(limit || 10) * (+(page || 1) - 1)).toString() || '0',
       })
     );
     if (details) {
-      store.dispatch(
-        productsApi.endpoints.getProduct.initiate(details.toString())
-      );
+      store.dispatch(getProduct.initiate(details.toString()));
     }
 
-    await Promise.all(
-      store.dispatch(productsApi.util.getRunningQueriesThunk())
-    );
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
     return {
       props: {
         data: {
@@ -43,11 +41,9 @@ const Home = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <ThemeProvider>
-      <Provider store={store()}>
-        <ErrorBoundary>
-          <Layout data={data} />
-        </ErrorBoundary>
-      </Provider>
+      <ErrorBoundary>
+        <Layout data={data} />
+      </ErrorBoundary>
     </ThemeProvider>
   );
 };

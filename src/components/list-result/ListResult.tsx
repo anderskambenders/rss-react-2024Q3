@@ -80,6 +80,7 @@ const ListResult = ({ data }: { data: IData }) => {
       onClick={(e) => {
         e.stopPropagation();
         if (details) {
+          delete query.details;
           router.push({
             pathname,
             query: { ...queryWithoutDetails },
