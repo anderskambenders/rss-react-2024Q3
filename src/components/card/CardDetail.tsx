@@ -9,8 +9,8 @@ const CardDetail = ({ data }: { data: IProduct }) => {
   const { theme } = useTheme();
 
   return (
-    <div className={'product__info'}>
-      {data && details && (
+    <div data-testid="product__info" className={'product__info'}>
+      {data && (
         <div className={`info__wrap info__wrap-${theme}`}>
           <img className="product__img" src={data.images[0]} alt="prod-img" />
           <h3 className={'title'}>{data.title}</h3>
@@ -25,10 +25,12 @@ const CardDetail = ({ data }: { data: IProduct }) => {
               className={'back__button'}
               onClick={(e) => {
                 e.stopPropagation();
-                router.push({
-                  pathname,
-                  query: { ...queryWithoutDetails },
-                });
+                if (details) {
+                  router.push({
+                    pathname,
+                    query: { ...queryWithoutDetails },
+                  });
+                }
               }}
             >
               Back

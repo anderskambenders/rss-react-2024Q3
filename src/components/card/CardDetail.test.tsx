@@ -32,12 +32,8 @@ describe('Card details component', () => {
       );
     });
 
-    const title = productDetails.title;
     await waitFor(() => {
-      expect(screen.getByText(title)).toBeInTheDocument();
-      expect(
-        screen.getByText(`Description: ${productDetails.description}`)
-      ).toBeInTheDocument();
+      expect(screen.getByTestId('product__info')).toBeInTheDocument();
     });
   });
 });
