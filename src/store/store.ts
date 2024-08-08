@@ -20,4 +20,5 @@ export const store = () =>
 
 type StoreType = ReturnType<typeof store>;
 export type RootState = ReturnType<StoreType['getState']>;
-export const wrapper = createWrapper(store, { debug: true });
+export type AppDispatch = ReturnType<typeof store>['dispatch'];
+export const wrapper = createWrapper(store);

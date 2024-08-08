@@ -3,6 +3,9 @@ import { describe, expect } from 'vitest';
 import ListResult from './ListResult';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { createMockRouter } from '../../__tests__/mock/mockRouter';
+import { ThemeProvider } from '../../context/ThemeContext';
+import { Provider } from 'react-redux';
+import { mockStore } from '../../__tests__/mock/mockStore';
 export const data = {
   cardsData: [
     {
@@ -57,9 +60,13 @@ describe('CardContainer', () => {
     const container = await act(async () => {
       const mockRouter = createMockRouter({});
       return render(
-        <RouterContext.Provider value={mockRouter}>
-          <ListResult data={data} />
-        </RouterContext.Provider>
+        <Provider store={mockStore}>
+          <RouterContext.Provider value={mockRouter}>
+            <ThemeProvider>
+              <ListResult data={data} />
+            </ThemeProvider>
+          </RouterContext.Provider>
+        </Provider>
       );
     });
     expect(container).toBeTruthy();
@@ -69,9 +76,13 @@ describe('CardContainer', () => {
     const container = await act(async () => {
       const mockRouter = createMockRouter({});
       return render(
-        <RouterContext.Provider value={mockRouter}>
-          <ListResult data={data} />
-        </RouterContext.Provider>
+        <Provider store={mockStore}>
+          <RouterContext.Provider value={mockRouter}>
+            <ThemeProvider>
+              <ListResult data={data} />
+            </ThemeProvider>
+          </RouterContext.Provider>
+        </Provider>
       ).container;
     });
     expect(container.getElementsByClassName('list__item').length).toBe(
@@ -84,10 +95,11 @@ describe('CardContainer', () => {
       const mockRouter = createMockRouter({});
       render(
         <RouterContext.Provider value={mockRouter}>
-          <ListResult
-            data={{ cardsData: [], cardsCount: 0, detailsData: null }}
-          />
-          ).container
+          <ThemeProvider>
+            <ListResult
+              data={{ cardsData: [], cardsCount: 0, detailsData: null }}
+            />
+          </ThemeProvider>
         </RouterContext.Provider>
       );
     });

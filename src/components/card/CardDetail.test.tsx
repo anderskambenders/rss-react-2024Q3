@@ -2,6 +2,7 @@ import CardDetail from './CardDetail';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
 import { createMockRouter } from '../../__tests__/mock/mockRouter';
+import { ThemeProvider } from '../../context/ThemeContext';
 
 const productDetails = {
   id: 1,
@@ -24,7 +25,9 @@ describe('Card details component', () => {
       const mockRouter = createMockRouter({});
       render(
         <RouterContext.Provider value={mockRouter}>
-          <CardDetail data={productDetails}></CardDetail>
+          <ThemeProvider>
+            <CardDetail data={productDetails}></CardDetail>
+          </ThemeProvider>
         </RouterContext.Provider>
       );
     });

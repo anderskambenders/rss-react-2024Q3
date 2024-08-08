@@ -5,12 +5,12 @@ import { useTheme } from '../../context/ThemeContext';
 const CardDetail = ({ data }: { data: IProduct }) => {
   const router = useRouter();
   const { query, pathname } = router;
-  const { ...queryWithoutDetails } = query;
+  const { details, ...queryWithoutDetails } = query;
   const { theme } = useTheme();
 
   return (
     <div className={'product__info'}>
-      {data && (
+      {data && details && (
         <div className={`info__wrap info__wrap-${theme}`}>
           <img className="product__img" src={data.images[0]} alt="prod-img" />
           <h3 className={'title'}>{data.title}</h3>
@@ -23,8 +23,8 @@ const CardDetail = ({ data }: { data: IProduct }) => {
           <div>
             <button
               className={'back__button'}
-              onClick={() => {
-                delete query.details;
+              onClick={(e) => {
+                e.stopPropagation();
                 router.push({
                   pathname,
                   query: { ...queryWithoutDetails },

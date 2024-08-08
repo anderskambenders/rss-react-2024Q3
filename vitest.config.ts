@@ -25,9 +25,10 @@ export default defineConfig({
       include: ['src/**'],
       exclude: [
         ...coverageConfigDefaults.exclude,
-        'src/main.tsx',
-        'src/**/*.d.ts',
-        'src/**/types.ts',
+        '**/_app.tsx',
+        '**/_document.tsx',
+        '**/404.tsx',
+        '**/index.tsx',
       ],
     },
   },
