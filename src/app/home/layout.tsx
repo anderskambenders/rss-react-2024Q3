@@ -3,7 +3,7 @@ import Flyout from '../../components/flyout/Flyout';
 import ListResult from '../../components/list-result/ListResult';
 import Search from '../../components/search/Search';
 import ThemeToggleButton from '../../components/theme-toggler/ThemeToggler';
-import { IProduct } from 'src/types/types';
+import { IProduct } from '../../types/types';
 
 async function getProductsCount(searchValue: string = '') {
   const response = await fetch(

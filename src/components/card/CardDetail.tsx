@@ -1,17 +1,20 @@
-import { useRouter } from 'next/router';
-import { IProduct } from '../../types/types';
-import { useTheme } from '../../context/ThemeContext';
+import BackButton from './BackButton';
 
-const CardDetail = ({ data }: { data: IProduct }) => {
-  const router = useRouter();
-  const { query, pathname } = router;
-  const { details, ...queryWithoutDetails } = query;
-  const { theme } = useTheme();
+async function getProduct(id: string) {
+  const productResponse = await fetch(`https://dummyjson.com/products/${id}`, {
+    method: 'GET',
+  });
+  const product = await productResponse.json();
+  return product;
+}
+
+const CardDetail = async ({ id }: { id: string }) => {
+  const data = await getProduct(id);
 
   return (
     <div data-testid="product__info" className={'product__info'}>
       {data && (
-        <div className={`info__wrap info__wrap-${theme}`}>
+        <div className={`info__wrap info__wrap-$`}>
           <img className="product__img" src={data.images[0]} alt="prod-img" />
           <h3 className={'title'}>{data.title}</h3>
           <div className={'block__info'}>
@@ -21,20 +24,7 @@ const CardDetail = ({ data }: { data: IProduct }) => {
             <div className={'list__wrap'}></div>
           </div>
           <div>
-            <button
-              className={'back__button'}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (details) {
-                  router.push({
-                    pathname,
-                    query: { ...queryWithoutDetails },
-                  });
-                }
-              }}
-            >
-              Back
-            </button>
+            <BackButton></BackButton>
           </div>
         </div>
       )}

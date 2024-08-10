@@ -1,13 +1,18 @@
+'use client';
 import { useTheme } from '../../context/ThemeContext';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { IProduct } from '../../types/types';
 import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
-// import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Card = ({ product }: { product: IProduct }) => {
   const { theme } = useTheme();
+  const searchParams = useSearchParams();
+  // const page = +searchParams.get('page') || 1;
+  // const details = searchParams.get('details');
+  // const query = searchParams.get('query');
   const dispatch = useAppDispatch();
-  // const router = useRouter();
+  const router = useRouter();
   const selectedItems = useAppSelector(
     (state) => state.selectedItems.selectedItems
   );
@@ -21,7 +26,17 @@ const Card = ({ product }: { product: IProduct }) => {
   };
 
   return (
-    <div data-testid="card" className="card" key={product.id}>
+    <div
+      onClick={() => {
+        const params = new URLSearchParams(searchParams?.toString());
+        params.set('details', product.id.toString());
+        router.replace(`?${params.toString()}`);
+        console.log(params.toString());
+      }}
+      data-testid="card"
+      className="card"
+      key={product.id}
+    >
       <div onClick={(e) => e.stopPropagation()}>
         <input
           type="checkbox"
