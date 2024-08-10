@@ -1,3 +1,4 @@
+'use client';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
 import { useRef } from 'react';

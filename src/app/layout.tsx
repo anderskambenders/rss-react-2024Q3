@@ -1,7 +1,6 @@
-import type { AppProps } from 'next/app';
 import '../index.css';
 import '../app.css';
-import '../pages/not-found.css';
+import './not-found.css';
 import '../components/card/card-detail.css';
 import '../components/flyout/flyout.css';
 import '../components/list-result/card.css';
@@ -10,14 +9,18 @@ import '../components/loader/loader.css';
 import '../components/pagination/pagination.css';
 import '../components/search/search.css';
 import '../components/theme-toggler/theme-toggler.css';
-import { Provider } from 'react-redux';
-import { wrapper } from '../store/store';
+import StoreProvider from './StoreProvider';
 
-export default function App({ Component, pageProps }: AppProps) {
-  const { store } = wrapper.useWrappedStore(pageProps);
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
+    <html lang="en">
+      <body>
+        <StoreProvider>{children}</StoreProvider>
+      </body>
+    </html>
   );
 }

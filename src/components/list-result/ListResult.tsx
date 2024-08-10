@@ -1,8 +1,8 @@
+'use client';
 import Card from './Card';
-import Pagination from '../pagination/Pagination';
 import { IProduct } from '../../types/types';
-import CardDetail from '../card/CardDetail';
-import { useRouter } from 'next/router';
+// import CardDetail from '../card/CardDetail';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTheme } from '../../context/ThemeContext';
 
 export interface IData {
@@ -11,40 +11,34 @@ export interface IData {
   cardsCount: number;
 }
 
-const ListResult = ({ data }: { data: IData }) => {
+const ListResult = ({ data }: { data: IProduct[] }) => {
   const router = useRouter();
-  const { pathname, query } = router;
-  const { details, ...queryWithoutDetails } = query;
+  const searchParams = useSearchParams();
   const theme = useTheme();
 
   return (
     <div
       onClick={(e) => {
         e.stopPropagation();
-        if (details) {
-          delete query.details;
-          router.push({
-            pathname,
-            query: { ...queryWithoutDetails },
-          });
-        }
+        const params = new URLSearchParams(searchParams?.toString());
+        params.delete('details');
+        router.push(`?${params.toString()}`);
       }}
       className="result__container"
     >
       <div className="list__container">
         <div>
           <div className={`list list-${theme}`}>
-            {data.cardsData.length === 0 && <p>Sorry, no items founded</p>}
-            {data.cardsData?.map((item: IProduct, ind: number) => (
+            {data.length === 0 && <p>Sorry, no items founded</p>}
+            {data?.map((item: IProduct, ind: number) => (
               <div key={ind}>
                 <Card product={item} />
               </div>
             ))}
           </div>
         </div>
-        <Pagination itemsCount={data.cardsCount} />
       </div>
-      {details && <CardDetail data={data.detailsData as IProduct}></CardDetail>}
+      {/* {<CardDetail data={data.detailsData as IProduct}></CardDetail>} */}
     </div>
   );
 };

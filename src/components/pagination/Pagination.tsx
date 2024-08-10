@@ -1,5 +1,6 @@
+'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type PaginationProps = {
   itemsCount: number;
@@ -18,33 +19,44 @@ const getPaginationNumbers = (currentPage: number, maxPages: number) => {
 };
 
 const Pagination = (props: PaginationProps) => {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const { query } = router;
-  const page = +(query?.page || 1);
+  const page = +searchParams.get('page') || 1;
+  const details = searchParams.get('details');
+  const query = searchParams.get('query');
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(page);
   const maxPages = Math.ceil(props.itemsCount / itemsPerPage);
   const pageNumbers = getPaginationNumbers(currentPage, maxPages);
 
   useEffect(() => {
-    if (query.page) {
-      setCurrentPage(+query?.page as unknown as number);
+    console.log(`page: ${page}`);
+    if (page !== 1) {
+      setCurrentPage(+page as unknown as number);
     }
-  }, [router]);
+  }, [searchParams]);
 
   const nextPage = () => {
     if (currentPage < maxPages) {
       setCurrentPage(currentPage + 1);
-      delete query.details;
-      router.push({ query: { ...query, page: `${currentPage + 1}` } });
+      const newQuery = new URLSearchParams({
+        page: (currentPage + 1).toString(),
+        query: query,
+        ...(details && { details }),
+      }).toString();
+      router.push(`?${newQuery}`);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      delete query.details;
-      router.push({ query: { ...query, page: `${currentPage - 1}` } });
+      const newQuery = new URLSearchParams({
+        page: (currentPage - 1).toString(),
+        query: query,
+        ...(details && { details }),
+      }).toString();
+      router.push(`?${newQuery}`);
     }
   };
 
@@ -67,8 +79,12 @@ const Pagination = (props: PaginationProps) => {
                 }
                 onClick={() => {
                   setCurrentPage(pageNumber);
-                  delete query.details;
-                  router.push({ query: { ...query, page: `${pageNumber}` } });
+                  const newQuery = new URLSearchParams({
+                    page: pageNumber.toString(),
+                    query: query,
+                    ...(details && { details }),
+                  }).toString();
+                  router.push(`?${newQuery}`);
                 }}
               >
                 {pageNumber}

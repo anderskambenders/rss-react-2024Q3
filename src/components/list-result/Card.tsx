@@ -2,13 +2,12 @@ import { useTheme } from '../../context/ThemeContext';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { IProduct } from '../../types/types';
 import { selectedItemsSlice } from '../../store/reducers/selectedItems.slice';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/navigation';
 
 const Card = ({ product }: { product: IProduct }) => {
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
-  const router = useRouter();
-  const { pathname, query } = router;
+  // const router = useRouter();
   const selectedItems = useAppSelector(
     (state) => state.selectedItems.selectedItems
   );
@@ -22,17 +21,7 @@ const Card = ({ product }: { product: IProduct }) => {
   };
 
   return (
-    <div
-      onClick={() => {
-        router.push({
-          pathname,
-          query: { ...query, details: `${product.id}` },
-        });
-      }}
-      data-testid="card"
-      className="card"
-      key={product.id}
-    >
+    <div data-testid="card" className="card" key={product.id}>
       <div onClick={(e) => e.stopPropagation()}>
         <input
           type="checkbox"

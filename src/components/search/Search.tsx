@@ -1,16 +1,21 @@
+'use client';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import ErrorBtn from '../error-boundary/ErrorBtn';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
+  const searchParams = useSearchParams();
+  const details = searchParams && searchParams.get('details');
   const router = useRouter();
   useEffect(() => {
-    setSearchValue((router.query.searchValue || '').toString());
-    const pageParam = router.query?.page;
-    if (!pageParam) {
-      router.push({ query: { ...router.query, page: 1 } });
-    }
+    const newQuery = new URLSearchParams({
+      page: '1',
+      query: searchValue,
+      ...(details && { details }),
+    }).toString();
+
+    router.push(`?${newQuery}`);
   }, []);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +25,12 @@ const Search = () => {
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     localStorage.setItem('valueKey', searchValue);
-    router.push({ query: { page: 1, searchValue } });
+    const newQuery = new URLSearchParams({
+      page: '1',
+      query: searchValue,
+      ...(details && { details }),
+    }).toString();
+    router.push(`?${newQuery}`);
   };
 
   return (
