@@ -1,6 +1,6 @@
 'use client';
 
-import ErrorBoundary from 'src/components/error-boundary/ErrorBoundary';
+import ErrorBoundary from '../components/error-boundary/ErrorBoundary';
 import React from 'react';
 
 export default function GlobalError({
