@@ -25,7 +25,7 @@ const Home = async ({
   console.log(data);
   return (
     <ThemeProvider>
-      <Layout data={data} searchValue={query} />
+      <Layout searchParams={searchParams} data={data} searchValue={query} />
     </ThemeProvider>
   );
 };

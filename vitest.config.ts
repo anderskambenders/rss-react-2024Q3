@@ -23,13 +23,7 @@ export default defineConfig({
       reporter: ['text', 'html'],
       reportsDirectory: './tests/unit/coverage',
       include: ['src/**'],
-      exclude: [
-        ...coverageConfigDefaults.exclude,
-        '**/_app.tsx',
-        '**/_document.tsx',
-        '**/404.tsx',
-        '**/index.tsx',
-      ],
+      exclude: [...coverageConfigDefaults.exclude, '**/app', '**/card'],
     },
   },
 });

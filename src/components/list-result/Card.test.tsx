@@ -1,11 +1,22 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import Card from './Card';
 import { ThemeProvider } from '../../context/ThemeContext';
 import { Provider } from 'react-redux';
 import { mockStore } from '../../__tests__/mock/mockStore';
-import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { createMockRouter } from '../../__tests__/mock/mockRouter';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+  useSearchParams: () => ({
+    get: vi.fn((key) => {
+      if (key === 'page') return '1';
+      return null;
+    }),
+    set: vi.fn(),
+  }),
+}));
 
 const product = {
   id: 1,
@@ -24,28 +35,22 @@ const product = {
 
 describe('Card Component', () => {
   it('image is rendered', () => {
-    const mockRouter = createMockRouter({});
     render(
-      <RouterContext.Provider value={mockRouter}>
-        <Provider store={mockStore}>
-          <ThemeProvider>
-            <Card product={product} />
-          </ThemeProvider>
-        </Provider>
-      </RouterContext.Provider>
+      <Provider store={mockStore}>
+        <ThemeProvider>
+          <Card product={product} />
+        </ThemeProvider>
+      </Provider>
     );
     expect(screen.getByAltText('product-image')).toBeInTheDocument();
   });
   it('renders the relevant card data', () => {
-    const mockRouter = createMockRouter({});
     render(
-      <RouterContext.Provider value={mockRouter}>
-        <Provider store={mockStore}>
-          <ThemeProvider>
-            <Card product={product} />
-          </ThemeProvider>
-        </Provider>
-      </RouterContext.Provider>
+      <Provider store={mockStore}>
+        <ThemeProvider>
+          <Card product={product} />
+        </ThemeProvider>
+      </Provider>
     );
     const name = screen.getByText('Name: Iphone');
     expect(name).toBeInTheDocument();

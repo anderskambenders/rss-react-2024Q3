@@ -9,7 +9,8 @@ import '../components/loader/loader.css';
 import '../components/pagination/pagination.css';
 import '../components/search/search.css';
 import '../components/theme-toggler/theme-toggler.css';
-import StoreProvider from './StoreProvider';
+import StoreProvider from '../components/StoreProvider/StoreProvider';
+import { ThemeProvider } from 'src/context/ThemeContext';
 
 export default function RootLayout({
   children,
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <ThemeProvider>
+          <StoreProvider>{children}</StoreProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.5% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>31/40</span>
+                <span class='fraction'>28/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.5% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/40</span>
+                <span class='fraction'>28/35</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,15 +109,9 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,8 +130,6 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -160,16 +152,13 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Card from './Card';
-import Pagination from '../pagination/Pagination';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use client';
+import Card from './Card';
 import { IProduct } from '../../types/types';
-import CardDetail from '../card/CardDetail';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTheme } from '../../context/ThemeContext';
 &nbsp;
 export interface IData {
@@ -178,22 +167,20 @@ export interface IData {
   cardsCount: number;
 }
 &nbsp;
-const ListResult = ({ data }: { data: IData }) =&gt; {
+const ListResult = ({ data }: { data: IProduct[] }) =&gt; {
   const router = useRouter();
-  const { pathname, query } = router;
-  const { details, ...queryWithoutDetails } = query;
+  const searchParams = useSearchParams();
+  const details = searchParams.get('details');
   const theme = useTheme();
 &nbsp;
   return (
     &lt;div
       onClick={<span class="fstat-no" title="function not covered" >(e) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        e.stopPropagation();</span>
 <span class="cstat-no" title="statement not covered" >        if (details) {</span>
-<span class="cstat-no" title="statement not covered" >          delete query.details;</span>
-<span class="cstat-no" title="statement not covered" >          router.push({</span>
-<span class="cstat-no" title="statement not covered" >            pathname,</span>
-<span class="cstat-no" title="statement not covered" >            query: { ...queryWithoutDetails },</span>
-<span class="cstat-no" title="statement not covered" >          });</span>
+<span class="cstat-no" title="statement not covered" >          e.stopPropagation();</span>
+<span class="cstat-no" title="statement not covered" >          const params = new URLSearchParams(searchParams?.toString());</span>
+<span class="cstat-no" title="statement not covered" >          params.delete('details');</span>
+<span class="cstat-no" title="statement not covered" >          router.push(`?${params.toString()}`);</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 <span class="cstat-no" title="statement not covered" >      }}</span>
       className="result__container"
@@ -201,17 +188,15 @@ const ListResult = ({ data }: { data: IData }) =&gt; {
       &lt;div className="list__container"&gt;
         &lt;div&gt;
           &lt;div className={`list list-${theme}`}&gt;
-            {data.cardsData.length === 0 &amp;&amp; &lt;p&gt;Sorry, no items founded&lt;/p&gt;}
-            {data.cardsData?.map((item: IProduct, ind: number) =&gt; (
+            {data.length === 0 &amp;&amp; &lt;p&gt;Sorry, no items founded&lt;/p&gt;}
+            {data?.map((item: IProduct, ind: number) =&gt; (
               &lt;div key={ind}&gt;
                 &lt;Card product={item} /&gt;
               &lt;/div&gt;
             ))}
           &lt;/div&gt;
         &lt;/div&gt;
-        &lt;Pagination itemsCount={data.cardsCount} /&gt;
       &lt;/div&gt;
-      {<span class="branch-0 cbranch-no" title="branch not covered" >details &amp;&amp; &lt;CardDetail data={data.detailsData as IProduct}&gt;&lt;/CardDetail&gt;}</span>
     &lt;/div&gt;
   );
 };
@@ -223,7 +208,7 @@ export default ListResult;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-08-08T22:16:18.907Z
+                at 2024-08-11T14:22:18.870Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

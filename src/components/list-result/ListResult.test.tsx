@@ -1,11 +1,30 @@
 import { act, render, screen } from '@testing-library/react';
-import { describe, expect } from 'vitest';
+import { describe, expect, vi } from 'vitest';
 import ListResult from './ListResult';
-import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { createMockRouter } from '../../__tests__/mock/mockRouter';
 import { ThemeProvider } from '../../context/ThemeContext';
 import { Provider } from 'react-redux';
 import { mockStore } from '../../__tests__/mock/mockStore';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    prefetch: vi.fn(),
+    beforePopState: vi.fn(),
+    events: {
+      on: vi.fn(),
+      off: vi.fn(),
+      emit: vi.fn(),
+    },
+  }),
+  useSearchParams: () => ({
+    get: vi.fn().mockReturnValue(null),
+  }),
+}));
+
 export const data = {
   cardsData: [
     {
@@ -56,16 +75,13 @@ export const data = {
 };
 
 describe('CardContainer', () => {
-  it('It renders component', async () => {
+  it('renders component', async () => {
     const container = await act(async () => {
-      const mockRouter = createMockRouter({});
       return render(
         <Provider store={mockStore}>
-          <RouterContext.Provider value={mockRouter}>
-            <ThemeProvider>
-              <ListResult data={data} />
-            </ThemeProvider>
-          </RouterContext.Provider>
+          <ThemeProvider>
+            <ListResult data={data.cardsData} />
+          </ThemeProvider>
         </Provider>
       );
     });
@@ -74,14 +90,11 @@ describe('CardContainer', () => {
 
   it('renders the specified number of cards', async () => {
     const container = await act(async () => {
-      const mockRouter = createMockRouter({});
       return render(
         <Provider store={mockStore}>
-          <RouterContext.Provider value={mockRouter}>
-            <ThemeProvider>
-              <ListResult data={data} />
-            </ThemeProvider>
-          </RouterContext.Provider>
+          <ThemeProvider>
+            <ListResult data={data.cardsData} />
+          </ThemeProvider>
         </Provider>
       ).container;
     });
@@ -90,17 +103,14 @@ describe('CardContainer', () => {
     );
   });
 
-  it('message is displayed if no cards are present', () => {
-    act(() => {
-      const mockRouter = createMockRouter({});
+  it('displays message if no cards are present', async () => {
+    await act(async () => {
       render(
-        <RouterContext.Provider value={mockRouter}>
+        <Provider store={mockStore}>
           <ThemeProvider>
-            <ListResult
-              data={{ cardsData: [], cardsCount: 0, detailsData: null }}
-            />
+            <ListResult data={[]} />
           </ThemeProvider>
-        </RouterContext.Provider>
+        </Provider>
       );
     });
     expect(screen.getByText('Sorry, no items founded')).toBeInTheDocument();
