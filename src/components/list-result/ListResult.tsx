@@ -26,7 +26,6 @@ const ListResult = ({ data }: { data: IProduct[] }) => {
           router.push(`?${params.toString()}`);
         }
       }}
-      className="result__container"
     >
       <div className="list__container">
         <div>

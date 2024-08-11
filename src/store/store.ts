@@ -18,7 +18,7 @@ export const store = () =>
       getDefaultMiddleware().concat(productsApi.middleware),
   });
 
-type StoreType = ReturnType<typeof store>;
+export type StoreType = ReturnType<typeof store>;
 export type RootState = ReturnType<StoreType['getState']>;
 export type AppDispatch = ReturnType<typeof store>['dispatch'];
 export const wrapper = createWrapper(store);

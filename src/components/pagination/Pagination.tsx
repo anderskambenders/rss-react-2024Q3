@@ -30,7 +30,6 @@ const Pagination = (props: PaginationProps) => {
   const pageNumbers = getPaginationNumbers(currentPage, maxPages);
 
   useEffect(() => {
-    console.log(`page: ${page}`);
     if (page !== 1) {
       setCurrentPage(+page as unknown as number);
     }
