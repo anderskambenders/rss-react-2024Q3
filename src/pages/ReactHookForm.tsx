@@ -8,6 +8,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { validationSchema } from "../utils/validation";
 import FormInput from "../components/react-hook-form/FormInput";
 import PasswordInput from "../components/react-hook-form/PasswordInput";
+import CountriesInput from "../components/react-hook-form/CountryInput";
+import GenderInput from "../components/react-hook-form/GenderInput";
 
 const ReactHookFormPage = () => {
   const navigate = useNavigate();
@@ -50,24 +52,9 @@ const ReactHookFormPage = () => {
           watchPassword={watch('password')}
         />
         <div>
-          <div>
-            <label htmlFor="countries">Countries:</label>
-            <input
-              id="countries"
-              type="text"
-              placeholder="Choose country..."
-              list="countries-list"
-              {...register('country')}
-            />
-          </div>
+          <CountriesInput error={errors.country?.message} register={register} />
         </div>
-        <div>
-          <label htmlFor="gender">Gender:</label>
-          <select id="gender" {...register('gender')}>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </div>
+        <GenderInput register={register} />
         <button type="submit">Submit</button>
       </form>
     </>
