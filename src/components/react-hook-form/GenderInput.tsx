@@ -1,7 +1,7 @@
 import { RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
 import { IData, FormDataKeys } from '../../types/types';
 
-export default function InputGender({
+export default function GenderInput({
   register,
 }: {
   register: (

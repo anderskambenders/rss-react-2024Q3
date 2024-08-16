@@ -1,4 +1,15 @@
+import { RefObject } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
+
+export interface InputProps {
+  labelText: string;
+  inputType: string;
+  name: string;
+  inputId: string;
+  inputRef: RefObject<HTMLInputElement>;
+  autocomplete?: string;
+  error?: string;
+}
 
 export interface IData {
   accept?: boolean;

@@ -1,21 +1,114 @@
-
+import { useRef, useState } from 'react';
 import { formInputs } from '../components/formInputs';
-import './form.css'
+import { ValidationError } from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks/hooks';
+import { dataListSlice } from '../store/slices/formData.slice';
+import FormInput from '../components/uncontrolled-form/FormInput';
+import { validationSchema } from '../utils/validation';
+import { showPasswordStrength } from '../utils/showPasswordStrenght';
 
-const UncontrolledFormPage = () => {
+const UncontrolledCompFormPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { addNewSubmit } = dataListSlice.actions;
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const ageInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const passwordRepeatRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const acceptRef = useRef<HTMLInputElement>(null);
+  const genderInputRef = useRef<HTMLSelectElement>(null);
+  const countriesRef = useRef<HTMLInputElement>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [, setPasswordStrength] = useState(0);
+  const inputRefsArr = [
+    nameInputRef,
+    ageInputRef,
+    emailInputRef,
+    imageInputRef,
+    acceptRef,
+  ];
+
+  const handleSubmit = async () => {
+    const name = nameInputRef.current?.value;
+    const age = Number(ageInputRef.current?.value);
+    const email = emailInputRef.current?.value;
+    const password = passwordInputRef.current?.value;
+    const passwordRepeat = passwordRepeatRef.current?.value;
+    const accept = acceptRef.current?.checked;
+    const gender = genderInputRef.current?.value;
+    const image = imageInputRef.current?.files;
+    const country = countriesRef.current?.value;
+    try {
+      await validationSchema.validate(
+        {
+          name,
+          age,
+          email,
+          password,
+          passwordRepeat,
+          accept,
+          gender,
+          image,
+          country,
+        },
+        { abortEarly: false }
+      );
+      dispatch(
+        addNewSubmit({
+          name,
+          age,
+          email,
+          password,
+          passwordRepeat,
+          accept,
+          gender,
+          image,
+          country,
+        })
+      );
+      navigate('/', { state: { from: 'uncontrolled-components-form' } });
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        const errors: Record<string, string> = {};
+        error.inner.forEach((error) => {
+          if (error.path) {
+            errors[error.path] = error.message;
+          }
+        });
+        setFormErrors(errors);
+      }
+    } finally {
+      showPasswordStrength(passwordInputRef.current?.value || '').then(
+        (strength) => {
+          setPasswordStrength(strength);
+        }
+      );
+    }
+  };
+
   return (
     <>
-      <h2>Uncontrolled form</h2>
-      <form>
-        {formInputs.map((item) => {
+      <h2>Uncontrolled Components Form</h2>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        {formInputs.map((item, ind) => {
           return (
-            <div key={`react-hook-form-${item.name}`}>
-              <div>
-                <label htmlFor={item.inputId}>{item.labelText}:</label>
-                <input id={item.inputId} type={item.inputType} />
-                <div />
-              </div>
-            </div>
+            <FormInput
+              key={ind}
+              labelText={item.labelText}
+              inputType={item.inputType}
+              name={item.name}
+              inputId={item.inputId}
+              inputRef={inputRefsArr[ind]}
+              error={formErrors[item.name]}
+            />
           );
         })}
         <div>
@@ -41,4 +134,4 @@ const UncontrolledFormPage = () => {
     </>
   );
 };
-export default UncontrolledFormPage;
+export default UncontrolledCompFormPage;
