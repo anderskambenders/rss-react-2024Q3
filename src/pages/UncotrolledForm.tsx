@@ -6,9 +6,10 @@ import { useAppDispatch } from '../store/hooks/hooks';
 import { dataListSlice } from '../store/slices/formData.slice';
 import FormInput from '../components/uncontrolled-form/FormInput';
 import { validationSchema } from '../utils/validation';
-import { showPasswordStrength } from '../utils/showPasswordStrenght';
 import PasswordInput from '../components/uncontrolled-form/PasswordInput';
 import CountryInput from '../components/uncontrolled-form/CountryInput';
+import GenderInput from '../components/uncontrolled-form/GenderInput';
+import { showPasswordStrength } from '../utils/showPasswordStrength';
 
 const UncontrolledCompFormPage = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const UncontrolledCompFormPage = () => {
   const passwordRepeatRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const acceptRef = useRef<HTMLInputElement>(null);
-  const genderInputRef = useRef<HTMLSelectElement>(null);
+  const genderInputRef = useRef<HTMLInputElement>(null);
   const countriesRef = useRef<HTMLInputElement>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -125,12 +126,8 @@ const UncontrolledCompFormPage = () => {
         />
         <CountryInput ref={countriesRef} error={formErrors['country']} />
         </div>
-        <div className="flex flex-col w-full items-start input-container">
-          <label htmlFor="gender">Gender:</label>
-          <select id="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
+        <div>
+        <GenderInput ref={genderInputRef} />
         </div>
         <button type="submit">Submit</button>
       </form>
