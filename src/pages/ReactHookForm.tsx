@@ -10,6 +10,7 @@ import FormInput from "../components/react-hook-form/FormInput";
 import PasswordInput from "../components/react-hook-form/PasswordInput";
 import CountriesInput from "../components/react-hook-form/CountryInput";
 import GenderInput from "../components/react-hook-form/GenderInput";
+import imageToBase64 from "../utils/imageToBase64";
 
 const ReactHookFormPage = () => {
   const navigate = useNavigate();
@@ -25,9 +26,21 @@ const ReactHookFormPage = () => {
   });
   const { addNewSubmit } = dataListSlice.actions;
 
-  const onSubmit = handleSubmit((data) => {
-    dispatch(addNewSubmit(data));
-    navigate('/', { state: { from: 'react-hook-form' } });
+  const onSubmit = handleSubmit(async (data) => {
+    const { name, age, email, password, gender, image, country } = data;
+    const image64 = image ? imageToBase64(image[0]) : '';
+    dispatch(
+      addNewSubmit({
+        name,
+        age,
+        email,
+        password,
+        gender,
+        image: image64,
+        country,
+      })
+    );
+    navigate('/');
   });
   return (
     <>
@@ -61,3 +74,4 @@ const ReactHookFormPage = () => {
   );
 };
 export default ReactHookFormPage;
+

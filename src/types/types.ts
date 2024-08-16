@@ -1,16 +1,6 @@
 import { RefObject } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
-export interface InputProps {
-  labelText: string;
-  inputType: string;
-  name: string;
-  inputId: string;
-  inputRef: RefObject<HTMLInputElement>;
-  autocomplete?: string;
-  error?: string;
-}
-
 export interface IData {
   accept?: boolean;
   name: string;
@@ -18,7 +8,7 @@ export interface IData {
   email: string;
   password: string;
   gender: string;
-  image?: File;
+  image?: FileList;
   passwordRepeat: string;
   country: string;
 }
@@ -37,6 +27,7 @@ export interface IFormData {
 
 export type formData = {
   dataList: IFormData[];
+  newFormSubmitted: boolean;
 };
 
 export type Register = UseFormRegisterReturn<FormDataKeys>;
@@ -60,14 +51,12 @@ export type FormHookProps = {
   inputId: string;
 };
 
-export type File = {
-  0: {
-    lastModified: number;
-    lastModifiedDate: Date;
-    name: string;
-    size: number;
-    type: string;
-    webkitRelativePath: string;
-  };
-  length: number;
-};
+export interface InputProps {
+  labelText: string;
+  inputType: string;
+  name: string;
+  inputId: string;
+  inputRef: RefObject<HTMLInputElement>;
+  autocomplete?: string;
+  error?: string;
+}

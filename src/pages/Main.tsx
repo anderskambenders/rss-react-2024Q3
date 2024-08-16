@@ -1,4 +1,5 @@
 import { useAppSelector } from "../store/hooks/hooks";
+import './main.css';
 
 const Main = () => {
   const { dataList } = useAppSelector((state) => state.dataListReducer);
