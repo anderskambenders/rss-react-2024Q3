@@ -1,4 +1,5 @@
-import { formInputs } from "../components/formInputs";
+
+import { formInputs } from '../components/formInputs';
 import './form.css'
 
 const UncontrolledFormPage = () => {
@@ -10,7 +11,7 @@ const UncontrolledFormPage = () => {
           return (
             <div key={`react-hook-form-${item.name}`}>
               <div>
-                <label htmlFor={item.inputId}>{item.lableText}:</label>
+                <label htmlFor={item.inputId}>{item.labelText}:</label>
                 <input id={item.inputId} type={item.inputType} />
                 <div />
               </div>
