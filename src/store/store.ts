@@ -1,6 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import countriesReducer from './slices/country.slice';
+import dataListReducer from './slices/formData.slice';
 
-const reducers = combineReducers({});
+
+const reducers = combineReducers({
+  countriesReducer,
+  dataListReducer,
+});
 
 export const store = configureStore({
   reducer: reducers,
