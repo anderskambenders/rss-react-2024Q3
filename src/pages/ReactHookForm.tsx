@@ -4,12 +4,21 @@ import './form.css';
 import { useAppDispatch } from "../store/hooks/hooks";
 import { useForm } from "react-hook-form";
 import { dataListSlice } from "../store/slices/formData.slice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchema } from "../utils/validation";
+import FormInput from "../components/react-hook-form/FormInput";
+import PasswordInput from "../components/react-hook-form/PasswordInput";
 
 const ReactHookFormPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm({
-    mode: 'onChange',
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    resolver: yupResolver(validationSchema),
   });
   const { addNewSubmit } = dataListSlice.actions;
 
@@ -21,21 +30,23 @@ const ReactHookFormPage = () => {
     <>
       <h2>React Hook Form</h2>
       <form onSubmit={onSubmit}>
-        {formInputs.map((item) => {
+        {formInputs.map((item, ind) => {
           return (
-            <div key={`react-hook-form-${item.name}`}>
-              <div>
-                <label htmlFor={item.inputId}>{item.lableText}:</label>
-                <input
-                  id={item.inputId}
-                  type={item.inputType}
-                  {...register(item.name)}
-                />
-                <div />
-              </div>
-            </div>
+            <FormInput
+              key={ind}
+              props={item}
+              error={errors[item.name]?.message}
+              register={register}
+            ></FormInput>
           );
         })}
+        <PasswordInput
+          error={{
+            errorPassword: errors.password?.message,
+            errorPasswordRepeat: errors.passwordRepeat?.message,
+          }}
+          register={register}
+        />
         <div>
           <div>
             <label htmlFor="countries">Countries:</label>
@@ -48,7 +59,7 @@ const ReactHookFormPage = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col w-full items-start input-container">
+        <div>
           <label htmlFor="gender">Gender:</label>
           <select id="gender" {...register('gender')}>
             <option value="male">Male</option>

@@ -1,44 +1,34 @@
+import { FormDataKeys } from '../types/types';
+
 export const formInputs = [
   {
-    lableText: 'Name',
+    labelText: 'Name',
     inputType: 'text',
-    name: 'name',
+    name: FormDataKeys.name,
     inputId: 'name',
   },
   {
-    lableText: 'Age',
+    labelText: 'Age',
     inputType: 'number',
-    name: 'age',
+    name: FormDataKeys.age,
     inputId: 'age',
   },
   {
-    lableText: 'Email',
+    labelText: 'Email',
     inputType: 'text',
-    name: 'email',
+    name: FormDataKeys.email,
     inputId: 'email',
   },
   {
-    lableText: 'Password',
-    inputType: 'password',
-    name: 'password',
-    inputId: 'password',
-  },
-  {
-    lableText: 'Confirm password',
-    inputType: 'password',
-    name: 'confirmPassword',
-    inputId: 'confirmPassword',
-  },
-  {
-    lableText: 'Upload image',
+    labelText: 'Upload image',
     inputType: 'file',
-    name: 'image',
+    name: FormDataKeys.image,
     inputId: 'image',
   },
   {
-    lableText: 'Accept T&C',
+    labelText: 'Accept T&C',
     inputType: 'checkbox',
-    name: 'tc',
+    name: FormDataKeys.accept,
     inputId: 'tc',
   },
 ];
