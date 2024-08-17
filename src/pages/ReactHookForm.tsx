@@ -34,7 +34,7 @@ const ReactHookFormPage = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     const { name, age, email, password, gender, image, country } = data;
-    const image64 = image ? imageToBase64(image[0]) : '';
+    const image64 = image ? await imageToBase64(image[0]) : '';
     dispatch(
       addNewSubmit({
         name,
