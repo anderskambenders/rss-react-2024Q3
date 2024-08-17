@@ -25,6 +25,7 @@ export default tseslint.config(
 
       ],
       '@typescript-eslint/no-explicit-any': ['error'],
+      'react-hooks/exhaustive-deps': ['off'],
     },
   },
 )

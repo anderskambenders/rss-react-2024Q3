@@ -18,16 +18,18 @@ export default function InputPassword({
 }) {
   const [passwordType, setPasswordType] = useState('password');
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <label htmlFor="password">Password:</label>
       <input type={passwordType} id="password" ref={passwordRef} />
       <button
+        style={{ position: 'absolute', top: 0, left: 250 }}
         type="button"
         onClick={() =>
           setPasswordType(passwordType === 'password' ? 'text' : 'password')
         }
       >
         <img
+          style={{ height: 15 }}
           src={passwordType === 'password' ? passClosed : passOpened}
           alt="pass-type"
         />

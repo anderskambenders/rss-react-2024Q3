@@ -11,6 +11,7 @@ import PasswordInput from "../components/react-hook-form/PasswordInput";
 import CountriesInput from "../components/react-hook-form/CountryInput";
 import GenderInput from "../components/react-hook-form/GenderInput";
 import imageToBase64 from "../utils/imageToBase64";
+import { useEffect } from "react";
 
 const ReactHookFormPage = () => {
   const navigate = useNavigate();
@@ -24,7 +25,12 @@ const ReactHookFormPage = () => {
     mode: 'all',
     resolver: yupResolver(validationSchema),
   });
-  const { addNewSubmit } = dataListSlice.actions;
+
+  const { addNewSubmit, setNewFormSubmitted } = dataListSlice.actions;
+
+  useEffect(() => {
+    dispatch(setNewFormSubmitted(false));
+  }, [dispatch]);
 
   const onSubmit = handleSubmit(async (data) => {
     const { name, age, email, password, gender, image, country } = data;

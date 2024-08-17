@@ -11,3 +11,7 @@
   height: 100%;
   object-fit: contain;
 }
+
+.bg-red {
+  background-color: red;
+}

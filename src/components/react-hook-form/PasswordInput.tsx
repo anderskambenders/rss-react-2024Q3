@@ -31,7 +31,7 @@ const PasswordInput = ({
   }, [watchPassword]);
   return (
     <>
-      <div>
+      <div style={{ position: 'relative' }}>
         <label htmlFor="password">Password:</label>
         <input
           type={passwordType}
@@ -39,17 +39,19 @@ const PasswordInput = ({
           {...register(FormDataKeys.password)}
         />
         <button
+          style={{ position: 'absolute', top: 25, left: 250 }}
           type="button"
           onClick={() =>
             setPasswordType(passwordType === 'password' ? 'text' : 'password')
           }
         >
           <img
+            style={{ height: 15 }}
             src={passwordType === 'password' ? passClosed : passOpened}
             alt="pass-type"
           />
         </button>
-        <p>{error.errorPassword ? error.errorPassword : ''}</p>
+        <p style={{ color: 'red' }}>{error.errorPassword ? error.errorPassword : ''}</p>
       </div>
       <div>
         <label htmlFor="password-repeat">Repeat password:</label>
@@ -58,7 +60,7 @@ const PasswordInput = ({
           id="password-repeat"
           {...register(FormDataKeys.passwordRepeat)}
         />
-        <p>{error.errorPasswordRepeat ? error.errorPasswordRepeat : ''}</p>
+        <p style={{ color: 'red' }}>{error.errorPasswordRepeat ? error.errorPasswordRepeat : ''}</p>
         {strength ? <div>Strength: {strength} of 4</div> : <></>}
       </div>
     </>
