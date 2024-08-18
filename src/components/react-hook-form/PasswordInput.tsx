@@ -3,7 +3,7 @@ import { FormDataKeys, IData } from '../../types/types';
 import { useEffect, useState } from 'react';
 import { showPasswordStrength } from '../../utils/showPasswordStrength';
 import passClosed from '../../assets/pass-closed.png';
-import passOpened from '../../assets/pass-closed.png';
+import passOpened from '../../assets/pass-opened.png';
 
 const PasswordInput = ({
   error,
@@ -39,7 +39,7 @@ const PasswordInput = ({
           {...register(FormDataKeys.password)}
         />
         <button
-          style={{ position: 'absolute', top: 25, left: 250 }}
+          style={{ position: 'absolute', top: 25, left: 312 }}
           type="button"
           onClick={() =>
             setPasswordType(passwordType === 'password' ? 'text' : 'password')

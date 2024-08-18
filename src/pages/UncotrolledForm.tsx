@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formInputs } from '../components/formInputs';
 import { ValidationError } from 'yup';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ import imageToBase64 from '../utils/imageToBase64';
 const UncontrolledCompFormPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { addNewSubmit } = dataListSlice.actions;
+  const { addNewSubmit, setNewFormSubmitted } = dataListSlice.actions;
   const nameInputRef = useRef<HTMLInputElement>(null);
   const ageInputRef = useRef<HTMLInputElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +34,11 @@ const UncontrolledCompFormPage = () => {
     imageInputRef,
     acceptRef,
   ];
+  
+  useEffect(() => {
+    dispatch(setNewFormSubmitted(false));
+  }, [dispatch]);
+
 
   const handleSubmit = async () => {
     const name = nameInputRef.current?.value;

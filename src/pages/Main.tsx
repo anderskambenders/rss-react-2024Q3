@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../store/hooks/hooks";
 import { dataListSlice } from "../store/slices/formData.slice";
 import './main.css';
+import './form.css';
 
 const Main = () => {
   const { dataList, newFormSubmitted } = useAppSelector(
